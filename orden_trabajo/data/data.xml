@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="tipo_orden_1" model="orden_trabajo.tipo_orden"><field name="name">Normal</field><field name="codigo">normal</field></record>
+    <record id="tipo_orden_2" model="orden_trabajo.tipo_orden"><field name="name">Rectificacion</field><field name="codigo">rectiicacion</field></record>
+    <record id="tipo_orden_3" model="orden_trabajo.tipo_orden"><field name="name">cortesia</field><field name="codigo">cortesia</field></record>
+    <record id="tipo_orden_4" model="orden_trabajo.tipo_orden"><field name="name">Reclamo</field><field name="codigo">reclamo</field></record>
+    <record id="tipo_orden_5" model="orden_trabajo.tipo_orden"><field name="name">Reproseso</field><field name="codigo">reproceso</field></record>
+    
+    <record id="orden_trabajo_disenio_lente_1" model="orden_trabajo.disenio_lente"><field name="name">VARILUX</field></record>
+    <record id="orden_trabajo_disenio_lente_2" model="orden_trabajo.disenio_lente"><field name="name">KODAK</field></record>
+    <record id="orden_trabajo_disenio_lente_3" model="orden_trabajo.disenio_lente"><field name="name">EYEZEN</field></record>
+    <record id="orden_trabajo_disenio_lente_4" model="orden_trabajo.disenio_lente"><field name="name">CRIZAL</field></record>
+    <record id="orden_trabajo_disenio_lente_5" model="orden_trabajo.disenio_lente"><field name="name">EXCELLENS</field></record>
+    <record id="orden_trabajo_disenio_lente_6" model="orden_trabajo.disenio_lente"><field name="name">NATURAL </field></record>
+    <record id="orden_trabajo_disenio_lente_7" model="orden_trabajo.disenio_lente"><field name="name">VISION SENCILLA</field></record>
+    <record id="orden_trabajo_disenio_lente_8" model="orden_trabajo.disenio_lente"><field name="name">BLENDED</field></record>
+    <record id="orden_trabajo_disenio_lente_9" model="orden_trabajo.disenio_lente"><field name="name">CONVENCIONAL</field></record>
+    <record id="orden_trabajo_disenio_lente_10" model="orden_trabajo.disenio_lente"><field name="name">TERMINADO</field></record>
+    <record id="orden_trabajo_disenio_lente_11" model="orden_trabajo.disenio_lente"><field name="name">SERVICIOS</field></record>
+</odoo>

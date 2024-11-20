@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+orden_trabajo_orden,orden_trabajo_orden,model_orden_trabajo_orden,base.group_user,1,1,1,1
+orden_trabajo_tipo_orden,orden_trabajo_tipo_orden,model_orden_trabajo_tipo_orden,base.group_user,1,1,1,1
+orden_trabajo_disenio_lente,orden_trabajo_disenio_lente,model_orden_trabajo_disenio_lente,base.group_user,1,1,1,1

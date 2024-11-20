@@ -1,0 +1,1049 @@
+<odoo>
+    <data>
+        <!-- <template id="portal_my_home_petitions" name="Show petitions" customize_show="True"
+        inherit_id="portal.portal_my_home" priority="50">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Peticiones</t>
+                <t t-set="url" t-value="'/my/invoices'"/>
+                <t t-set="placeholder_count" t-value="0"/>
+            </t>
+        </xpath>
+    </template>-->
+
+
+        <!--<template
+        id="formulario">
+        <t t-call="website.layout">
+            <t t-set="additional_title" t-value="'Orden de trabajo'" />
+            <div id="wrap" class="oe_structure oe_empty">
+                <h1>This is only a text</h1>
+                <form action="/website/form/" method="post" enctype="multipart/form-data" class="o_mark_required"
+        data-mark="*" data-pre-fill="true" data-success-mode="redirect"
+        data-success-page="/contactus-thank-you" data-model_name="orden_trabajo.orden">
+                    <div class="s_website_form_rows row s_col_no_bgcolor">
+                        <div class="form-group s_website_form_field col-12    s_website_form_dnone" data-name="Field">
+                            <field name="date" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>-->
+        <template id="formulario">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure oe_empty">
+                    <form action="/orden_trabajo/crear/" method="post"
+                        class="o_mark_required " enctype="multipart/form-data"
+                        data-model_name="orden_trabajo.orden" data-mark="*"
+                        data-pre-fill="true"
+                        data-success_page="/orden_trabajo/success">
+                        <div class="container" style="background-color: #dadada; margin-top:20px; margin-bottom:20px;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span style="text-align: center;">Creacion de nueva orden de
+                                        trabajo</span>
+                                </div>
+                                <div class="col-md-6 form-group form-field">
+                                    <div class=" text-md-right">
+                                        <label class="col-form-label" for="date">
+                                            Fecha
+                                        </label>
+                                    </div>
+                                    <div class="">
+                                        <input type="date" t-att-value="date" readonly="true"
+                                            class="form-control o_website_form_input"
+                                            name="date" />
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row form-group form-field">
+                                <div class="col-md-4 text-md-right">
+                                    <label class="col-form-label" for="date">
+                                        Paciente:
+                                    </label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" required="true"
+                                        class="form-control o_website_form_input"
+                                        name="paciente" />
+                                </div>
+                            </div>
+                            <br />
+                            <h3 class="text-center">
+                                <strong>Receta</strong>
+                            </h3>
+                            <div class="row">
+                                <table class="table">
+                                    <thead>
+                                        <th></th>
+                                        <th  class="text-center">ESFERA</th>
+                                        <th  class="text-center">CILINDRO</th>
+                                        <th class="text-center">EJE</th>
+                                        <th class="text-center">ADICCION</th>
+                                        <th colspan="2" class="text-center">PRISMA</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>OJO DERECHO</td>
+                                            <td>
+                                                <div class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                            <select id="valor_esfera_derecho"
+                                                                name="valor_esfera_derecho"
+                                                                required="True"
+                                                                class="form-control o_website_form_input"
+                                                                style="width: 50px;">
+
+                                                                <option value="plus">&#65291;</option>
+                                                                <option value="minus">&#65293;</option>
+                                                            </select>
+                                                        </div>
+
+
+                                                    <input id="esfera_ojo_derecho" type="number"
+                                                        style="width: 110px;"
+                                                        class="form-control o_website_form_input"
+                                                        step="0.25"
+                                                        name="esfera_ojo_derecho"/>
+                                                <div id="feedback_esfera_ojo_derecho" class="invalid-feedback">
+                                                  </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                               
+                                                    <div class="input-group-prepend">
+                                                            <select id="valor_cilindro_derecho"
+                                                                name="valor_cilindro_derecho"
+                                                                required="True"
+                                                                class="form-control o_website_form_input"
+                                                                style="width: 50px;">
+                                                                <option value="minus">&#65293;</option>
+                                                                <option value="plus">&#65291;</option>
+                                                            </select>
+                                                    </div>
+                                                    <input id='cilindro_ojo_derecho' type="number"
+                                                        class="form-control o_website_form_input"
+                                                         step="0.25"
+                                                        name="cilindro_ojo_derecho"
+                                                        style="width: 110px;"
+                                                    />
+                                                    <div class="invalid-feedback" id="feedback_cilindro_ojo_derecho">
+                                                      </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input id="eje_ojo_derecho" type="number"
+                                                    class="form-control o_website_form_input"
+                                                    name="eje_ojo_derecho" min="0" max="180" />
+                                                    <div id="feedback_eje_ojo_derecho" class="invalid-feedback">
+                                                        
+                                                      </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                            <select id="valor_adiccion_derecho"
+                                                                name="valor_adiccion_derecho"
+                                                                required="True"
+                                                                class="form-control"
+                                                                style="width: 50px;">
+                                                                <option value="plus">&#65291;</option>
+                                                                <option value="minus">&#65293;</option>
+
+                                                            </select>
+                                                    </div>
+                                                    <input id="adiccion_ojo_derecho" type="number"
+                                                        class="form-control o_website_form_input"
+                                                        name="adiccion_ojo_derecho"
+                                                        step="0.25"
+                                                        min="1" max="3"
+                                                        style="width: 110px;"
+                                                    />
+                                                    <div id="feedback_adiccion_ojo_derecho" class="invalid-feedback">
+                                                       
+                                                      </div>
+                                                    </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <input id="prisma_derecho_valor1"
+                                                            type="number"
+                                                            step="0.25"
+                                                            class="form-control o_website_form_input input-group-text"
+                                                            name="prisma_derecho_valor1"
+                                                            style="width: 110px;" />
+                                                        <div class="invalid-feedback"
+                                                            id="feedback_prisma_derecho_valor1">
+                                                        </div>
+                                                      
+                                                    </div>
+                                                
+                                                            <select id="prisma_derecho_1"
+                                                                name="prisma_derecho_1"
+                                                                required="True"
+                                                                class="form-control o_website_form_input"
+                                                                style="width: 70px;">
+                                                                <t t-foreach="prismas" t-as="prisma">
+                                                            <option
+                                                                t-att-value="prisma['value']"
+                                                                t-esc="prisma['content']" />
+                                                                </t>
+                                                            </select>
+                                                       
+
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <input id="prisma_derecho_valor2"
+                                                            type="number"
+                                                            step="0.25"
+                                                            class="form-control o_website_form_input input-group-text"
+                                                            name="prisma_derecho_valor2"
+                                                            style="width: 110px;"
+                                                        />
+                                                        <div class="invalid-feedback"
+                                                            id="feedback_prisma_derecho_valor2">
+                                                        </div>
+                                                      
+                                                    </div>                                                       
+                                                            <select id="prisma_derecho_2"
+                                                                name="prisma_derecho_2"
+                                                                required="True"
+                                                                class="form-control o_website_form_input"
+                                                                style="width: 70px;">
+                                                                <t t-foreach="prismas" t-as="prisma">
+                                                            <option
+                                                                t-att-value="prisma['value']"
+                                                                t-esc="prisma['content']" />
+                                                                </t>
+                                                            </select>
+                                                        
+                                                    
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>OJO IZQUIERDO</td>
+                                            <td>
+                                                <div
+                                                    class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                            <select id="valor_esfera_izquierdo"
+                                                                name="valor_esfera_izquierdo"
+                                                                required="True"
+                                                                class="form-control o_website_form_input"
+                                                                style="width: 50px;">
+                                                                <option value="plus">&#65291;</option>
+                                                                <option value="minus">&#65293;</option>
+
+                                                            </select>
+                                                    </div>
+
+
+                                                    <input id="esfera_ojo_izqueirdo" type="number"
+                                                        class="form-control o_website_form_input"
+                                                        name="esfera_ojo_izqueirdo" 
+                                                         step="0.25"
+                                                        style="width: 110px;"
+                                                    />
+                                                    <div id="feedback_esfera_ojo_izqueirdo" class="invalid-feedback">
+                                                      
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                            <select id="valor_cilindro_izquierdo"
+                                                                name="valor_cilindro_izquierdo"
+                                                                required="True"
+                                                                class="form-control o_website_form_input"
+                                                                style="width: 50px;">
+                                                                <option value="minus">&#65293;</option>
+                                                                <option value="plus">&#65291;</option>
+
+
+                                                            </select>
+                                                     </div>
+
+
+                                                    <input id="cilindro_ojo_izquierdo" type="number"
+                                                        class="form-control o_website_form_input"
+                                                        name="cilindro_ojo_izquierdo"
+                                                        step="0.25"
+                                                        style="width: 110px;"
+                                                    />
+                                                <div class="invalid-feedback" id="feedback_cilindro_ojo_izquierdo">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input id="eje_ojo_izquierdo" type="number"
+                                                    class="form-control o_website_form_input"
+                                                    name="eje_ojo_izquierdo" min="0" max="180"
+                                                />
+                                                <div id="feedback_eje_ojo_izquierdo" class="invalid-feedback">
+                                                       
+                                                      </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                            <select id="valor_adicion_izquierdo"
+                                                                name="valor_adicion_izquierdo"
+                                                                required="True"
+                                                                class="form-control o_website_form_input"
+                                                                style="width: 50px;">
+                                                                <option value="plus">&#65291;</option>
+                                                                <option value="minus">&#65293;</option>
+                                                            </select>
+                                                    </div>
+
+
+                                                    <input id='adicion_ojo_izqueirdo' type="number"
+                                                        class="form-control o_website_form_input"
+                                                        name="adicion_ojo_izqueirdo" min="1" max="3"
+                                                        style="width: 110px;"
+                                                        step="0.25" />
+                                                <div id="feedback_adicion_ojo_izqueirdo" class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <input id="prisma_izquierda_valor1"
+                                                            type="number"
+                                                            step="0.25"
+                                                            class="form-control o_website_form_input input-group-text"
+                                                            name="prisma_izquierda_valor1"
+                                                            style="width: 110px;"
+                                                        />
+                                                        <div class="invalid-feedback"
+                                                            id="feedback_prisma_izquierda_valor1">
+                                                        </div>
+                                                      
+                                                    </div>    
+                                                            <select id="prisma_izquierda_1"
+                                                                name="prisma_izquierda_1"
+                                                                required="True"
+                                                                class="form-control o_website_form_input"
+                                                                style="width: 70px;">
+                                                                <t t-foreach="prismas" t-as="prisma">
+                                                            <option
+                                                                t-att-value="prisma['value']"
+                                                                t-esc="prisma['content']" />
+                                                                </t>
+                                                            </select>
+                                                 
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <input id="prisma_izquierdo_valor2"
+                                                            type="number"
+                                                            step="0.25"
+                                                            class="form-control o_website_form_input input-group-text"
+                                                            name="prisma_izquierdo_valor2"
+                                                            style="width: 110px;"
+                                                        />
+                                                        <div class="invalid-feedback"
+                                                            id="feedback_prisma_izquierdo_valor2">
+                                                        </div>
+                                                      
+                                                    </div>    
+                                                       
+                                                            <select id="prisma_izquierdo_2"
+                                                                name="prisma_izquierdo_2"
+                                                                required="True"
+                                                                class="form-control o_website_form_input"
+                                                                style="width: 70px;">
+                                                                <t t-foreach="prismas" t-as="prisma">
+                                                            <option
+                                                                t-att-value="prisma['value']"
+                                                                t-esc="prisma['content']" />
+                                                                </t>
+                                                            </select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <h3 class="text-center">
+                                <strong>TIPO DE PRODUCTO </strong>
+                            </h3>
+                            <table class="table">
+                                <tr>
+                                    <td>TIPO DE ORDEN:</td>
+                                    <td>
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-md-5 col-sm-8">
+                                                    <select id="tipo_orden_id" name="tipo_orden_id"
+                                                        required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 432px; height: 35px;">
+                                                        <t t-foreach="tipo_ordenes" t-as="tipo">
+                                                            <option t-att-value="tipo.id"
+                                                                t-esc="tipo.name" />
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>MATERIAL DEL LENTE:</td>
+                                    <td>
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-md-5 col-sm-8">
+                                                    <select id="material_lente_id"
+                                                        name="material_lente_id" required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 432px; height: 35px;">
+                                                        <t t-foreach="material_lente" t-as="tipo">
+                                                            <option t-att-value="tipo.id"
+                                                                t-esc="tipo.x_name" />
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>TIPO DE LENTE:</td>
+                                    <td>
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-md-5 col-sm-8">
+                                                    <select id="tipo_lente_id" name="tipo_lente_id"
+                                                        required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 432px; height: 35px;">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>DISEÑO DEL LENTE:</td>
+                                    <td>
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-md-5 col-sm-8">
+                                                    <select id="disenio_lente_id"
+                                                        name="disenio_lente_id" required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 432px; height: 35px;">
+                                                        <t t-foreach="disenios" t-as="disenio">
+                                                            <option t-att-value="disenio.id"
+                                                                t-esc="disenio.name" />
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>PRODUCTO</td>
+                                    <td>
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-md-5 col-sm-8">
+                                                   
+                                                        <select id="producto_template_id" name="producto_template_id" required="True" class="form-control o_website_form_input"
+                                                        style="width: 432px; height: 35px;">
+                                                        <option value=""></option>
+                                                        <t t-foreach="productos" t-as="product">
+                                                            <option t-att-value="product.id"
+                                                                t-esc="product.name" />
+                                                        </t>
+                                                        </select>
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>TRATAMIENTOS</td>
+                                    <td>
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-md-5 col-sm-8">
+                                                    <select id="tratamientos_id"
+                                                        name="tratamientos_id" required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 432px; height: 35px;">
+                                                        <t t-foreach="tratamientos" t-as="tipo">
+                                                            <option t-att-value="tipo.id"
+                                                                t-esc="tipo.x_name" />
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>COLOR:</td>
+                                    <td>
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-md-5 col-sm-8">
+                                                    <select id="color_lente_id"
+                                                        name="color_lente_id" required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 432px; height: 35px;">
+                                                        <t t-foreach="color" t-as="tipo">
+                                                            <option t-att-value="tipo.id"
+                                                                t-esc="tipo.x_name" />
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td>BASE EN USO:</td>
+                                    <td>
+                                        <textarea id="nota_base_uso"
+                                            class="form-control o_website_form_input"
+                                            name="nota_base_uso" />
+                                    </td>
+                                </tr>
+                            </table>
+                            <h3 class="text-center">
+                                <strong>MEDIDAS </strong>
+                            </h3>
+                            <table class="table">
+                                <thead>
+                                    <th></th>
+                                    <th>ALTURA OBLEA</th>
+                                    <th>ALTURA PUPILAR</th>
+                                    <th>D.P. LEJOS</th>
+                                    <th>D.P. CERCA </th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>OJO DERECHO </td>
+                                        <td>
+                                            <input type="number"
+                                                class="form-control o_website_form_input"
+                                                name="oj_derecho_altura_oblea" min="0" max="100" />
+                                        </td>
+                                        <td>
+                                            <input id="oj_derecho_altura_pupilar" type="number"
+                                                class="form-control o_website_form_input"
+                                                name="oj_derecho_altura_pupilar" min="0" max="40"
+                                                step="0.50" />
+                                                <div class="invalid-feedback"
+                                                id="feedback_oj_derecho_altura_pupilar">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input id="oj_derecho_dp_lejos" type="number"
+                                                class="form-control o_website_form_input"
+                                                name="oj_derecho_dp_lejos" min="20" max="40"
+                                                step="0.50" />
+                                                <div class="invalid-feedback"
+                                                id="feedback_oj_derecho_dp_lejos">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input id="oj_derecho_dp_cerca" type="number"
+                                                class="form-control o_website_form_input"
+                                                name="oj_derecho_dp_cerca" min="20" max="35"
+                                                step="0.50" />
+                                                <div class="invalid-feedback"
+                                                id="feedback_oj_derecho_dp_cerca">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>OJO IZQUIERDO </td>
+                                        <td>
+                                            <input type="number"
+                                                class="form-control o_website_form_input"
+                                                name="oj_izquierdo_altura_oblea" min="0" max="100" />
+                                        </td>
+                                        <td>
+                                            <input id="oj_izquierdo_altura_pupilar" type="number"
+                                                class="form-control o_website_form_input"
+                                                name="oj_izquierdo_altura_pupilar" min="0" max="40"
+                                                step="0.50" />
+                                                <div class="invalid-feedback"
+                                                id="feedback_oj_izquierdo_altura_pupilar">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input id="oj_izquierdo_dp_lejos" type="number"
+                                                class="form-control o_website_form_input"
+                                                name="oj_izquierdo_dp_lejos" min="20" max="40"
+                                                step="0.50" />
+                                                <div class="invalid-feedback"
+                                                id="feedback_oj_izquierdo_dp_lejos">
+                                            </div>
+                                                
+                                        </td>
+                                        <td>
+                                            <input id="oj_izquierdo_dp_cerca" type="number"
+                                                class="form-control o_website_form_input"
+                                                name="oj_izquierdo_dp_cerca" min="20" max="35"
+                                                step="0.50" />
+                                                <div class="invalid-feedback"
+                                                id="feedback_oj_izquierdo_dp_cerca">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h3 class="text-center">
+                                <strong>DESCRIPCION DEL ARO </strong>
+                            </h3>
+                            <table class="table">
+                                <tr>
+                                    <td rowspan="2">ARO:</td>
+                                    <td>
+                                        <input type="text" id="marca" name="marca"
+                                            class="form-control o_website_form_input" />
+                                    </td>
+                                    <td colspan="2">
+                                        <input type="text" id="codigo_disenio" name="codigo_disenio"
+                                            class="form-control o_website_form_input" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>MARCA</td>
+                                    <td colspan="2">CODIGO DEL DISEÑO</td>
+                                </tr>
+                                <tr>
+                                    <td>ESTADO DEL ARO:</td>
+                                    <td>
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-md-5 col-sm-8">
+                                                    <select id="estado_aro" name="codigo_disenio"
+                                                        required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 432px; height: 35px;">
+                                                        <option value="nuevo">Nuevo</option>
+                                                        <option value="usado">Usado</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        COLOR DEL ARO:
+                                    </td>
+                                    <td>
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-md-5 col-sm-8">
+                                                    <select id="color_aro_id" name="color_aro_id"
+                                                        required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 432px; height: 35px;">
+                                                        <t t-foreach="coloraro" t-as="tipo">
+                                                            <option t-att-value="tipo.id"
+                                                                t-esc="tipo.x_name" />
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Tipo de aro:
+                                    </td>
+                                    <td>
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-md-5 col-sm-8">
+                                                    <select id="tipo_aro" name="tipo_aro"
+                                                        required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 432px; height: 35px;">
+                                                        <t t-foreach="tipo_aros" t-as="tipo">
+                                                            <option t-att-value="tipo['value']"
+                                                                t-esc="tipo['content']" />
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td />
+                                    <td />
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <table class="table">
+                                            <tr>
+                                                <td rowspan="2">
+                                                    <img src="/orden_trabajo/static/src/img/h.png"
+                                                        style="width: 110px;" />
+                                                </td>
+                                                <td class="text-center">H</td>
+                                                <td rowspan="2">
+                                                    <img src="/orden_trabajo/static/src/img/v.png"
+                                                        style="width: 110px;" />
+                                                </td>
+                                                <td class="text-center">V</td>
+                                                <td rowspan="2">
+                                                    <img src="/orden_trabajo/static/src/img/d.png"
+                                                        style="width: 110px;" />
+                                                </td>
+                                                <td class="text-center">D</td>
+                                                <td rowspan="2">
+                                                    <img src="/orden_trabajo/static/src/img/p.png"
+                                                        style="width: 110px;" />
+                                                </td>
+                                                <td class="text-center">P</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input id="medida_h" type="number"
+                                                        class="form-control o_website_form_input"
+                                                        min="20"
+                                                        max="70"
+                                                        step="0.50"
+                                                        name="medida_h"
+                                                        style="width: 110px;"
+                                                    />
+                                                        <div class="invalid-feedback"
+                                                            id="feedback_medida_h">
+                                                        </div>
+                                                </td>
+                                                <td>
+                                                    <input
+                                                        id="medida_v"
+                                                        min="15"
+                                                        max="60"
+                                                        step="0.50"
+                                                        type="number"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 110px;"
+                                                        name="medida_v" />
+                                                        <div class="invalid-feedback"
+                                                        id="feedback_medida_v">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="number"
+                                                        id="medida_d"
+                                                        min="20"
+                                                        max="70"
+                                                        step="0.50"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 110px;"
+                                                        name="medida_d" />
+                                                        <div class="invalid-feedback"
+                                                        id="feedback_medida_d">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="number"
+                                                        id="medida_p"
+                                                        min="5"
+                                                        max="30"
+                                                        step="0.50"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 110px;"
+                                                        name="medida_p" />
+                                                        <div class="invalid-feedback"
+                                                        id="feedback_medida_p">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                          
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8">
+                                        <table class="table">
+                                            <tr>
+                                                <td class="text-center">Angulo panoramico.</td>
+                                                <td class="text-center">Angulo pantoscopico.</td>
+                                                <td class="text-center">Distancia del vertice.</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input type="number"
+                                                        id="angulo_panoramico"
+                                                        min="0"
+                                                        max="35"
+                                                        class="form-control o_website_form_input"
+                                                        name="angulo_panoramico" />
+                                                        <div class="invalid-feedback"
+                                                        id="feedback_angulo_panoramico">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="number"
+                                                        id="angulo_pantoscopico"
+                                                        min="0"
+                                                        max="12"
+                                                        class="form-control o_website_form_input"
+                                                        name="angulo_pantoscopico" />
+                                                            <div class="invalid-feedback"
+                                                            id="feedback_angulo_pantoscopico">
+                                                        </div>
+                                                </td>
+                                                <td>
+                                                    <input type="number"
+                                                        id="distancia_vertice"
+                                                        class="form-control o_website_form_input"
+                                                        name="distancia_vertice" />
+                                                        <div class="invalid-feedback"
+                                                        id="feedback_distancia_vertice">
+                                                    </div>
+                                            </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5"> OBSERVACIONES: <textarea
+                                            class="form-control o_website_form_input"
+                                            name="observaciones" />
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="form-group row">
+                                <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7 text-center">
+                                    <button type="submit" onsubmit="return false;" class="btn btn-primary btn-lg btn-block o_website_form_send o_default_snippet_text ">Enviar</button>
+                                    <span id="o_website_form_result" />
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                    </form>
+                </div>
+            </t>
+
+        </template>
+        <template id="success_orden_trabajo"
+            name="success_orden_trabajo">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure oe_empty">
+                    <div class="container" style="background-color: #dadada;">
+                    <div class="jumbotron text-center">
+                        <h1>Su orden ha sido enviada.</h1>
+                    </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <record id="view_move_codigo_inherit" model="ir.ui.view">
+            <field name="name">view_move_codigo_inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='attribute_line_ids']/tree/field[@name='value_ids']" position="after">
+                    <field name="codigo" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="ordenes_trabajo_action" model="ir.actions.act_window">
+            <field name="name">Ordenes de trabajo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">orden_trabajo.orden</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem
+            id="ordenes_trabajo"
+            parent="sale.sale_menu_root"
+            name="Ordenes de trabajo"
+            action="orden_trabajo.ordenes_trabajo_action"
+            sequence="1"
+        />
+        <record id="orden_trabajo_view_tree" model="ir.ui.view">
+            <field name="name">orden_trabajo_view_tree</field>
+            <field name="model">orden_trabajo.orden</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="paciente" />
+                    <field name="material_lente_id" />
+                    <field name="optica_id" />
+                   <field name="tipo_orden_id" />
+                    <field name="producto_template_id" />
+                </tree>
+            </field>
+        </record>
+        <record id="orden_trabajo_view_form" model="ir.ui.view">
+            <field name="model">orden_trabajo.orden</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group string="Datos generales">
+                            <field name="create_date" />
+                            
+                            <field name="optica_id" />
+                            <field name="tipo_orden_id" />
+                            <field name="paciente" />
+                        </group>
+                        <group>
+                            <group string="Medidas ojo izquierdo">
+                                <field name="esfera_ojo_izqueirdo" />
+                                <field name="cilindro_ojo_izquierdo" />
+                                <field name="eje_ojo_izquierdo" />
+                                <field name="adicion_ojo_izqueirdo" />
+                                <field name="oj_izquierdo_altura_oblea" />
+                                <field name="oj_izquierdo_altura_pupilar" />
+                                <field name="oj_izquierdo_dp_lejos" />
+                                <field name="oj_izquierdo_dp_cerca" />
+                                <field name="valor_esfera_izquierdo" />
+                                <field name="valor_adicion_izquierdo" />
+                                <field name="valor_cilindro_izquierdo" />
+                                <field name="prisma_izquierda_1" />
+                                <field name="prisma_izquierdo_2" />
+                            </group>
+                            <group string="Medidas ojo derecho">
+                                <field name="esfera_ojo_derecho" />
+                                <field name="cilindro_ojo_derecho" />
+                                <field name="eje_ojo_derecho" />
+                                <field name="adiccion_ojo_derecho" />
+                                <field name="oj_derecho_altura_oblea" />
+                                <field name="oj_derecho_altura_pupilar" />
+                                <field name="oj_derecho_dp_lejos" />
+                                <field name="oj_derecho_dp_cerca" />
+                                <field name="valor_esfera_derecho" />
+                                <field name="valor_cilindro_derecho" />
+                                <field name="valor_adiccion_derecho" />
+                                <field name="prisma_derecho_1" />
+                                <field name="prisma_derecho_2" />
+                            </group>
+                           
+                        </group>
+                        <group string="Medidas de los angulos">
+                            <group>
+                                <field name="angulo_panoramico" />
+                            </group>
+                            <group>
+                                <field name="angulo_pantoscopico" />
+                            </group>
+                            <group>
+                                <field name="distancia_vertice" />
+                            </group>
+                        </group>
+                        <group string="Medidas del lente">
+                            <group>
+                                <field name="medida_h" />
+                            </group>
+                            <group>
+                                <field name="medida_v" />
+                            </group>
+                            <group>
+                                <field name="medida_d" />
+                            </group>
+                            <group>
+                                <field name="medida_p" />
+                            </group>
+                        </group>
+                        <group string="Datos del aro">
+                            <group>
+                                <field name="tipo_aro" />
+                               <field name="color_aro_id" />
+                                <field name="marca" />
+                                <field name="codigo_disenio" />
+                            </group>
+                            <group>
+                                <field name="estado_aro" />
+                                <field name="observaciones_aro" />
+                                <field name="nota_base_uso" />
+                                <field name="producto_template_id" />
+                            </group>
+                        </group>
+                        
+                        <group string="Caracteristicas del lente">
+                            <group>
+                                <field name="color_lente_id" />
+                                <field name="material_lente_id" />
+                                <field name="disenio_lente_id" />
+                            </group>
+                            <group>
+                                <field name="tratamientos_id" />
+                                <field name="tipo_lente_id" />
+                            </group>
+                        </group>
+                        <group string="Datos extra">
+                            <field name="observaciones" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <function model="ir.model.fields" name="formbuilder_whitelist">
+            <value>orden_trabajo.orden</value>
+            <value
+                eval="['date', 'esfera_ojo_derecho','create_date'
+            ,'paciente','esfera_ojo_izqueirdo','cilindro_ojo_derecho','cilindro_ojo_izquierdo',
+            'eje_ojo_derecho','eje_ojo_izquierdo','adiccion_ojo_derecho','adicion_ojo_izqueirdo','tipo_orden_id',
+            'producto_template_id','oj_derecho_altura_oblea','oj_derecho_altura_pupilar','oj_derecho_dp_lejos','oj_derecho_dp_cerca',
+            'oj_izquierdo_altura_oblea','oj_izquierdo_altura_pupilar','oj_izquierdo_dp_lejos','oj_izquierdo_dp_cerca','estado_aro','tipo_de_aro',
+            'observaciones_aro','medida_h','medida_v','medida_d','medida_p','observaciones','valor_esfera_derecho','color_lente_id', 'marca',
+            'codigo_disenio', 'valor_cilindro_derecho', 'valor_adiccion_derecho', 'prisma_derecho_1', 'prisma_derecho_2', 'valor_esfera_izquierdo', 'valor_cilindro_izquierdo',
+            'prisma_izquierda_1', 'prisma_izquierdo_2','material_lente_id', 'tratamientos_id']" />
+        </function>
+        <function model="ir.model.fields" name="formbuilder_whitelist">
+            <value>orden_trabajo.tipo_orden</value>
+            <value eval="['name', 'codigo']" />
+        </function>
+        <function model="ir.model.fields" name="formbuilder_whitelist">
+            <value>product.category</value>
+            <value eval="['visible_sitio']" />
+        </function>
+
+        <record model="ir.ui.view" id="add_visible_on_web_site">
+            <field name="name">add_visible_on_web_site</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view" />
+            <field name="priority" eval="200" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position='after'>
+                    <field name="visible_sitio" />
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="ProductWidget" owl="1"> 
+        <select id="producto_template_id" name="producto_template_id" required="True" class="form-control o_website_form_input"
+        style="width: 432px; height: 35px;">
+        <option t-att-value="NA"
+                t-esc="NA" />
+        <t t-foreach="state.productos" t-as="product">
+            <option t-att-value="product.id"
+                t-esc="product.name" />
+        </t>
+        </select>
+    </t>
+ </templates>
+ 
