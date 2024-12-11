@@ -272,4 +272,148 @@ if valordistancia =='':
     <!--Fin Requerido Altura oblea derecha-->
 
 <!--#######################################################################################################################################-->
+
+    <!--Inicio requerido distancia de lejos izquierdo-->
+    <record id="orden_trabajo_validacion_para_producto_template_id_izquierdo" model="orden_trabajo.parametro">
+        <field name="name">producto_template_id_2</field>
+        <field name="nombreclave">producto_template_id_2</field>
+        <field name="llave">${PRODUCTO_IZQUIERDO}</field>
+    </record>
+    <record id="val_para_multiconfig" model="orden_trabajo.parametro">
+        <field name="name">flexSwitchCheckChecked</field>
+        <field name="nombreclave">flexSwitchCheckChecked</field>
+        <field name="llave">${MULTICONFIG}</field>
+    </record>
+    <record id="orden_trabajo_validacion_condicion_requeridooj_izquierdo_dp_lejos" model="orden_trabajo.condicion">
+        <field name="evento">required</field>
+        <field name="mensajeerror">El campo es requerido</field>
+        <field name="usadependencias">True</field>
+        <field name="codigoejecutar">
+valordistancia = '${VALOR}'
+if '${MULTICONFIG}'.lower() == 'on':
+    product_id = int('${PRODUCTO_IZQUIERDO}' if '${PRODUCTO_IZQUIERDO}' != '' else '0')
+else:
+    product_id = int('${PRODUCTO_DERECHO}' if '${PRODUCTO_DERECHO}' != '' else '0')
+product_lines = self.env["product.template.attribute.line"].search([('product_tmpl_id','=',int(product_id))])
+result = True
+if valordistancia =='':
+    if len(product_lines) > 0:
+        validaciones = product_lines.filtered(lambda r: r.codigo == 'validacion')
+        if len(validaciones) > 0:
+            mensaje = ""
+            sensillo_digital = validaciones.value_ids.filtered(lambda x: x.codigo == 'sensillo_digital' or  x.codigo == 'lente_progesivo')
+            if len(sensillo_digital) > 0:
+                mensaje += "Este campo es requerido."
+                result = False
+        </field>
+        <field name="parametros_ids" eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_para_producto_template_id'),ref('orden_trabajo.orden_trabajo_validacion_para_producto_template_id_izquierdo'),ref('orden_trabajo.val_para_multiconfig')])]" />
+    </record>
+    <record id="orden_trabajo_validacion_val_reque_oj_izquierdo_dp_lejos" model="orden_trabajo.validacion">
+        <field name="name">Requerido distancia lejos izqueirdo</field>
+        <field name="nombrecampo">oj_izquierdo_dp_lejos</field>
+        <field name="identificador">oj_izquierdo_dp_lejos</field>
+        <field name="condiciones_ids"  eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_condicion_requeridooj_izquierdo_dp_lejos')])]"/>
+    </record>
+    <!--Fin requerido distancia de lejos-->
+
+    <!--Inicio Requerido Altura Pupilar izquierda-->
+    <record id="orden_trabajo_validacion_condicion_requeridooj_izquierdo_altura_pupilar" model="orden_trabajo.condicion">
+        <field name="evento">required</field>
+        <field name="mensajeerror">El campo es requerido</field>
+        <field name="usadependencias">True</field>
+        <field name="codigoejecutar">
+valoralturap = '${VALOR}'
+if '${MULTICONFIG}'.lower() == 'on':
+    product_id = int('${PRODUCTO_IZQUIERDO}' if '${PRODUCTO_IZQUIERDO}' != '' else '0')
+else:
+    product_id = int('${PRODUCTO_DERECHO}' if '${PRODUCTO_DERECHO}' != '' else '0')
+product_lines = self.env["product.template.attribute.line"].search([('product_tmpl_id','=',int(product_id))])
+result = True
+if valoralturap =='':
+    if len(product_lines) > 0:
+        validaciones = product_lines.filtered(lambda r: r.codigo == 'validacion')
+        if len(validaciones) > 0:
+            mensaje = ""
+            sensillo_digital = validaciones.value_ids.filtered(lambda x: x.codigo == 'sensillo_digital' or  x.codigo == 'lente_progesivo')
+            if len(sensillo_digital) > 0:
+                mensaje += "Este campo es requerido."
+                result = False
+        </field>
+        <field name="parametros_ids" eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_para_producto_template_id'),ref('orden_trabajo.orden_trabajo_validacion_para_producto_template_id_izquierdo'),ref('orden_trabajo.val_para_multiconfig')])]" />
+    </record>
+    <record id="orden_trabajo_validacion_val_oj_izquierdo_altura_pupilar" model="orden_trabajo.validacion">
+        <field name="name">Requerido Altura Pupilar derecha</field>
+        <field name="nombrecampo">oj_izquierdo_altura_pupilar</field>
+        <field name="identificador">oj_izquierdo_altura_pupilar</field>
+        <field name="condiciones_ids"  eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_condicion_requeridooj_izquierdo_altura_pupilar')])]"/>
+    </record>
+    <!--Fin Requerido Altura Pupilar derecha-->
+
+    <!--Inicio Requerido Distancia de cerca izquierda-->
+    <record id="orden_trabajo_validacion_condicion_requeridooj_izquierdo_dp_cerca" model="orden_trabajo.condicion">
+        <field name="evento">required</field>
+        <field name="mensajeerror">El campo es requerido</field>
+        <field name="usadependencias">True</field>
+        <field name="codigoejecutar">
+valordistancia = '${VALOR}'
+valoralturap = '${VALOR}'
+if '${MULTICONFIG}'.lower() == 'on':
+    product_id = int('${PRODUCTO_IZQUIERDO}' if '${PRODUCTO_IZQUIERDO}' != '' else '0')
+else:
+    product_id = int('${PRODUCTO_DERECHO}' if '${PRODUCTO_DERECHO}' != '' else '0')
+product_lines = self.env["product.template.attribute.line"].search([('product_tmpl_id','=',int(product_id))])
+result = True
+if valordistancia =='':
+    if len(product_lines) > 0:
+        validaciones = product_lines.filtered(lambda r: r.codigo == 'validacion')
+        if len(validaciones) > 0:
+            mensaje = ""
+            sensillo_digital = validaciones.value_ids.filtered(lambda x: x.codigo == 'vision_sencilla' or  x.codigo == 'lente_bifocal' or x.codigo=='vision_cercana')
+            if len(sensillo_digital) > 0:
+                mensaje += "Este campo es requerido."
+                result = False
+        </field>
+        <field name="parametros_ids" eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_para_producto_template_id'),ref('orden_trabajo.orden_trabajo_validacion_para_producto_template_id_izquierdo'),ref('orden_trabajo.val_para_multiconfig')])]" />
+    </record>
+    <record id="orden_trabajo_validacion_val_oj_izquierdo_dp_cerca" model="orden_trabajo.validacion">
+        <field name="name">Requerido Distancia de cerca izquierdo</field>
+        <field name="nombrecampo">oj_izquierdo_dp_cerca</field>
+        <field name="identificador">oj_izquierdo_dp_cerca</field>
+        <field name="condiciones_ids"  eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_condicion_requeridooj_izquierdo_dp_cerca')])]"/>
+    </record>
+    <!--Fin Requerido Distancia de cerca izquierda-->
+
+     <!--Inicio Requerido oblea izquierda-->
+    <record id="orden_trabajo_validacion_condicion_requeridooj_izquierdo_altura_oblea" model="orden_trabajo.condicion">
+        <field name="evento">required</field>
+        <field name="mensajeerror">El campo es requerido</field>
+        <field name="usadependencias">True</field>
+        <field name="codigoejecutar">
+valordistancia = '${VALOR}'
+if '${MULTICONFIG}'.lower() == 'on':
+    product_id = int('${PRODUCTO_IZQUIERDO}' if '${PRODUCTO_IZQUIERDO}' != '' else '0')
+else:
+    product_id = int('${PRODUCTO_DERECHO}' if '${PRODUCTO_DERECHO}' != '' else '0')
+product_lines = self.env["product.template.attribute.line"].search([('product_tmpl_id','=',int(product_id))])
+product_lines = self.env["product.template.attribute.line"].search([('product_tmpl_id','=',int(product_id))])
+result = True
+if valordistancia =='':
+    if len(product_lines) > 0:
+        validaciones = product_lines.filtered(lambda r: r.codigo == 'validacion')
+        if len(validaciones) > 0:
+            mensaje = ""
+            sensillo_digital = validaciones.value_ids.filtered(lambda x: x.codigo == 'vision_sencilla' or  x.codigo == 'lente_bifocal' or x.codigo=='vision_cercana')
+            if len(sensillo_digital) > 0:
+                mensaje += "Este campo es requerido."
+                result = False
+        </field>
+        <field name="parametros_ids" eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_para_producto_template_id'),ref('orden_trabajo.orden_trabajo_validacion_para_producto_template_id_izquierdo'),ref('orden_trabajo.val_para_multiconfig')])]" />
+    </record>
+    <record id="orden_trabajo_validacion_val_oj_izquierdo_altura_oblea" model="orden_trabajo.validacion">
+        <field name="name">Requerido altura oblea izquierda.</field>
+        <field name="nombrecampo">oj_izquierdo_altura_oblea</field>
+        <field name="identificador">oj_izquierdo_altura_oblea</field>
+        <field name="condiciones_ids"  eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_condicion_requeridooj_izquierdo_altura_oblea')])]"/>
+    </record>
+    <!--Fin Requerido Altura oblea izquierda-->
 </odoo>

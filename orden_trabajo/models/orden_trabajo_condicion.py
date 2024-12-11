@@ -20,9 +20,12 @@ class orden_trabajo_condicion(models.Model):
         codigoejecutar = self.codigoejecutar.replace('${VALOR}',valor)
         for para in self.parametros_ids:
             #llave = self.parametros_ids.filtered(lambda m: m.nombreclave == para.get('nombreclave'))
+            print('################################')
+            print(para.nombreclave)
+            print('################################')
             valor1 = dependencias.get(para.nombreclave)
-            if valor1:
-                codigoejecutar = codigoejecutar.replace(para.llave,valor1)
+            #if valor1:
+            codigoejecutar = codigoejecutar.replace(para.llave,valor1)
         print(codigoejecutar)
         eval = safe_eval(codigoejecutar,env,mode='exec', nocopy=True)
         print(env.get('result'))
