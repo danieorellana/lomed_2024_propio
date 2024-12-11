@@ -25,6 +25,9 @@
         'data/data.xml',
         'static/src/xml/orden_trabajo.xml',
         'views/views.xml',
+        'views/orden_trabajo_condicion.xml',
+        'views/orden_trabajo_validacion.xml',
+        'views/orden_trabajo_parametro.xml'
         
     ],
      'images': [

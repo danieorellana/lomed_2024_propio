@@ -20,8 +20,9 @@ _logger = logging.getLogger(__name__)
 class orden(models.Model):
     _name="orden_trabajo.orden"
     _description="Orden para hacer un proceso de produccion"
+    name=fields.Char("Name",compute="calcular_name")
     #_website_form_access = True
-    date = fields.Date("Fecha")
+    date = fields.Datetime("Fecha")
     create_date = fields.Datetime("Fecha de creacion")
     #create_uid = fields.Many2one(comodel_name ='res.users', string='Creado por')
     optica_id = fields.Many2one(comodel_name ="odoosv.caja",string="Optica")
@@ -37,7 +38,7 @@ class orden(models.Model):
     adiccion_ojo_derecho = fields.Float(string="Adiccion ojo derecho")
     adicion_ojo_izqueirdo = fields.Float(string="Adicion ojo izquierdo")
     tipo_orden_id = fields.Many2one(comodel_name="orden_trabajo.tipo_orden",string="Tipo de orden")
-    producto_template_id = fields.Many2one(comodel_name="product.template",string='Producto')
+    #Lineas a duplicar
     nota_base_uso = fields.Char("Base en uso")
     #MEDIDAS
     #ojo derecho
@@ -51,6 +52,7 @@ class orden(models.Model):
     oj_izquierdo_dp_lejos = fields.Float(string="Ojo derecho dp lejos")
     oj_izquierdo_dp_cerca = fields.Float(string="Ojo derecho dp cerca")
     estado_aro=fields.Selection([('nuevo',"Nuevo"),("usado",'Usado')], string="Estado del aro")
+    tipo_aro_material_id = fields.Many2one(comodel_name="x_material_product", string="Tipo de material del aro.")
     tipo_de_aro = fields.Selection([('Completo','Completo'),("semi_aire", "Semi aire"),('alaire', 'Al aire')], string="Tipo de aro")
     observaciones_aro = fields.Text("Observaciones del aro")
     #medidas hvpd
@@ -59,7 +61,7 @@ class orden(models.Model):
     medida_d = fields.Float("D")
     medida_p = fields.Float("P")
     observaciones = fields.Text("Observaciones")
-    color_lente_id = fields.Many2one(comodel_name ="product.template.attribute.value", string="Color el lente")
+   
     color_aro_id = fields.Many2one(comodel_name ="x_product_color", string="Color de aro")
     marca= fields.Char("Marca")
     codigo_disenio= fields.Char("Codigo del diseño")
@@ -67,34 +69,57 @@ class orden(models.Model):
     valor_cilindro_derecho =fields.Selection([("minus","－"),("plus", "＋")], string="Valor cilindro derecho")
     valor_adiccion_derecho =fields.Selection([("minus","－"),("plus", "＋")], string="Valor addcion derecho")
     prisma_derecho_1 = fields.Selection([("NA","NA"),("U","∇ U"),("D","∆ D"),("O","⊲ O"),("I","⊳ I")], string="Prisma derecho 1")
+    prisma_derecho_valor1 = fields.Float("Valor de prisma derecho 1")
     prisma_derecho_2 = fields.Selection([("NA","NA"),("U","∇ U"),("D","∆ D"),("O","⊲ O"),("I","⊳ I")], string="Prisma derecho 2")
+    prisma_derecho_valor2 = fields.Float("Valor de prisma derecho 2")
     valor_esfera_izquierdo =fields.Selection([("minus","－"),("plus", "＋")], string="Valor esfera izquierda")
     valor_adicion_izquierdo = fields.Selection([("minus","－"),("plus", "＋")], string="Valor adiccion izquierda")
     valor_cilindro_izquierdo =fields.Selection([("minus","－"),("plus", "＋")], string="Valor cilindro izquierda")
     prisma_izquierda_1 = fields.Selection([("NA","NA"),("U","∇ U"),("D","∆ D"),("O","⊲ O"),("I","⊳ I")], string="Prisma izquierdo 1")
+    prisma_izquierda_valor1 = fields.Float("Valor de prisma izquierdo 1")
     prisma_izquierdo_2 = fields.Selection([("NA","NA"),("U","∇ U"),("D","∆ D"),("O","⊲ O"),("I","⊳ I")], string="Prisma izquierdo 2")
-    material_lente_id = fields.Many2one(comodel_name ="product.template.attribute.value",string="Material del lente")
-    tratamientos_id = fields.Many2one(comodel_name ="product.template.attribute.value",string="Tratamientos")
+    prisma_izquierdo_valor2 = fields.Float("VAlor de prisma izquierdo 2")
+    lente_configuracion_ids = fields.One2many(comodel_name="orden_trabajo.configuracion_lente", inverse_name="orden_id",string="Configuraciones de cada lente")
+    
     #tipo_lente = fields.Selection([("terminado","TERMINADO"),("digital", 'DIGITAL'), ("convencional","CONVENCIONAL"),("otros","OTROS")], string="Tipo de lente")
-    tipo_lente_id = fields.Many2one(comodel_name ='product.template.attribute.value', string='Tipo de lente')
-    disenio_lente_id = fields.Many2one(comodel_name ="product.template.attribute.value",string="Disenio el lente")
+
+   
     tipo_aro = fields.Selection([('semi_aire','Aro semi al aire'),('al_aire','Aro al aire'),('completo','Aro completo')], string="Tipo de aro")
     angulo_panoramico = fields.Float("Angulo panoramico")
     angulo_pantoscopico = fields.Float("Angulo pantoscopico")
     distancia_vertice = fields.Float("Distancia del vertice")
+    color_antireflejante_id = fields.Selection([('na',"NA"),("verde","Verde"),("azul","Azul")], string="Color de antireflejante")
+    configuracion_avanzada = fields.Boolean("Configuración por ojo")
     @api.model
     def create(self,values):
         record = super(orden, self).create(values)
         for r in record:
             return r
+    def calcular_name(self):
+        name = ''
+        if self.optica_id:
+            name += self.optica_id.name +' '
+        name += self.date.strftime('%Y-%m-%d %H:%M:%S')
+        self.name = name
+class configuracion_lente(models.Model):
+    _name="orden_trabajo.configuracion_lente"
+    _description="Esta es la configuracion de lente por ojo"
+    tipo = fields.Selection([('izquierda',"Izquierdo"),('derecha',"Derecho"),("unico","Unico")],string="Tipo de configuracion")
+    producto_template_id = fields.Many2one(comodel_name="product.template",string='Producto')
+    material_lente_id = fields.Many2one(comodel_name ="product.template.attribute.value",string="Material del lente")
+    tipo_lente_id = fields.Many2one(comodel_name ='product.template.attribute.value', string='Tipo de lente')
+    disenio_lente_id = fields.Many2one(comodel_name ="product.template.attribute.value",string="Disenio el lente")
+    tratamientos_id = fields.Many2one(comodel_name ="product.template.attribute.value",string="Tratamientos")
+    color_lente_id = fields.Many2one(comodel_name ="product.template.attribute.value", string="Color del lente")
+    orden_id = fields.Many2one(comodel_name="orden_trabajo.orden", string="Orden")
     
-
 
 class tipo_orden(models.Model):
     _name="orden_trabajo.tipo_orden"
     _description = "Tipo de orden de trabajo"
     name = fields.Char("Nombre")
     codigo = fields.Char("Codigo")
+    tipo_usuario = fields.Selection([("intern","Interno"),("portal","Portal")], string="Usuario permitido")
 
 class disenio_lente(models.Model):
     _name="orden_trabajo.disenio_lente"
@@ -106,4 +131,9 @@ class categoria_producto(models.Model):
 
 class product_template_attribute_line(models.Model):
     _inherit="product.template.attribute.line"
-    codigo  = fields.Selection([('material','Materiales'),('tipolente','Tipo lente'),('tratamiento','Tratamiento'),('colores','Colores'),('disenio','Diseño')], string="Codigo")
+    codigo  = fields.Selection([('material','Materiales'),('tipolente','Tipo lente'),('tratamiento','Tratamiento'),('colores','Colores'),('disenio','Diseño'),("validacion","Validación")], string="Codigo")
+    
+
+class product_atribute_value(models.Model):
+    _inherit="product.attribute.value"
+    codigo  = fields.Char("Codigo")

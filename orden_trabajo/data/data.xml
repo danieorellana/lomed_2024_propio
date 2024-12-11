@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="tipo_orden_1" model="orden_trabajo.tipo_orden"><field name="name">Normal</field><field name="codigo">normal</field></record>
-    <record id="tipo_orden_2" model="orden_trabajo.tipo_orden"><field name="name">Rectificacion</field><field name="codigo">rectiicacion</field></record>
-    <record id="tipo_orden_3" model="orden_trabajo.tipo_orden"><field name="name">cortesia</field><field name="codigo">cortesia</field></record>
-    <record id="tipo_orden_4" model="orden_trabajo.tipo_orden"><field name="name">Reclamo</field><field name="codigo">reclamo</field></record>
-    <record id="tipo_orden_5" model="orden_trabajo.tipo_orden"><field name="name">Reproseso</field><field name="codigo">reproceso</field></record>
+    <record id="tipo_orden_1" model="orden_trabajo.tipo_orden"><field name="name">Normal</field><field name="codigo">normal</field><field name="tipo_usuario">portal</field></record>
+    <record id="tipo_orden_2" model="orden_trabajo.tipo_orden"><field name="name">Rectificacion</field><field name="codigo">rectiicacion</field><field name="tipo_usuario">intern</field></record>
+    <record id="tipo_orden_3" model="orden_trabajo.tipo_orden"><field name="name">cortesia</field><field name="codigo">cortesia</field><field name="tipo_usuario">intern</field></record>
+    <record id="tipo_orden_4" model="orden_trabajo.tipo_orden"><field name="name">Reclamo</field><field name="codigo">reclamo</field><field name="tipo_usuario">intern</field></record>
+    <record id="tipo_orden_5" model="orden_trabajo.tipo_orden"><field name="name">Reproseso</field><field name="codigo">reproceso</field><field name="tipo_usuario">intern</field></record>
     
     <record id="orden_trabajo_disenio_lente_1" model="orden_trabajo.disenio_lente"><field name="name">VARILUX</field></record>
     <record id="orden_trabajo_disenio_lente_2" model="orden_trabajo.disenio_lente"><field name="name">KODAK</field></record>
@@ -17,4 +17,259 @@
     <record id="orden_trabajo_disenio_lente_9" model="orden_trabajo.disenio_lente"><field name="name">CONVENCIONAL</field></record>
     <record id="orden_trabajo_disenio_lente_10" model="orden_trabajo.disenio_lente"><field name="name">TERMINADO</field></record>
     <record id="orden_trabajo_disenio_lente_11" model="orden_trabajo.disenio_lente"><field name="name">SERVICIOS</field></record>
+
+    <!--Inicio validacion de prismaderecho 1-->
+    <record id="orden_trabajo_validacion_para_prismaderecho2" model="orden_trabajo.parametro">
+        <field name="name">Prisma derecho 2</field>
+        <field name="nombreclave">prisma_derecho_2</field>
+        <field name="llave">${PRISMA2}</field>
+    </record>
+    <record id="orden_trabajo_validacion_condicion_validarprismaderecho1" model="orden_trabajo.condicion">
+        <field name="evento">onchange</field>
+        <field name="mensajeerror">El prima no es valido</field>
+        <field name="usadependencias">True</field>
+        <field name="codigoejecutar">
+valor1 = '${VALOR}'
+valor2 = '${PRISMA2}'
+tupla1 = ["U","D"]
+tupla2 = ["O","I"]
+mensaje = ''
+if (valor1 in tupla1 and valor2 in tupla1)or (valor1 in tupla2 and valor2 in tupla2):
+    result = False
+    mensaje  = "Si el prisma1 es: "+valor1+" el prisma2 no puede ser: " +valor2
+else:
+    result = True
+        </field>
+        <field name="parametros_ids" eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_para_prismaderecho2')])]" />
+    </record>
+    <record id="orden_trabajo_validacion_val_prismaizquierdo1" model="orden_trabajo.validacion">
+        <field name="name">Validar prismas derecho1</field>
+        <field name="nombrecampo">prisma_derecho_1</field>
+        <field name="identificador">prisma_derecho_1</field>
+        <field name="condiciones_ids"  eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_condicion_validarprismaderecho1')])]"/>
+    </record>
+    <!--Fin validacion de prismaderecho 1-->
+
+    <!--Inicio validacion de prismaderecho 2-->
+    <record id="orden_trabajo_validacion_para_prismaderecho1" model="orden_trabajo.parametro">
+        <field name="name">Prisma derecho 1</field>
+        <field name="nombreclave">prisma_derecho_1</field>
+        <field name="llave">${PRISMA1}</field>
+    </record>
+    <record id="orden_trabajo_validacion_condicion_validarprismaderecho2" model="orden_trabajo.condicion">
+        <field name="evento">onchange</field>
+        <field name="mensajeerror">El prima no es valido</field>
+        <field name="usadependencias">True</field>
+        <field name="codigoejecutar">
+valor1 = '${PRISMA1}'
+valor2 = '${VALOR}'
+tupla1 = ["U","D"]
+tupla2 = ["O","I"]
+mensaje = ''
+if (valor1 in tupla1 and valor2 in tupla1)or (valor1 in tupla2 and valor2 in tupla2):
+    result = False
+    mensaje  = "Si el prisma1 es: "+valor1+" el prisma2 no puede ser: " +valor2
+else:
+    result = True
+        </field>
+        <field name="parametros_ids" eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_para_prismaderecho1')])]" />
+    </record>
+    <record id="orden_trabajo_validacion_val_prismaderecho2" model="orden_trabajo.validacion">
+        <field name="name">Validar prismas derecho2</field>
+        <field name="nombrecampo">Prisma ojo derecho</field>
+        <field name="identificador">prisma_derecho_2</field>
+        <field name="condiciones_ids"  eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_condicion_validarprismaderecho2')])]"/>
+    </record>
+    <!--Fin validacion de prismaderecho 2-->
+
+     <!--Inicio validacion de prisma izquierdo 1-->
+    <record id="orden_trabajo_validacion_para_prismaizqueirda2" model="orden_trabajo.parametro">
+        <field name="name">prisma_izquierda_2</field>
+        <field name="nombreclave">prisma_izquierdo_2</field>
+        <field name="llave">${PRISMA2}</field>
+    </record>
+    <record id="orden_trabajo_validacion_condicion_validarprismaizquierdo1" model="orden_trabajo.condicion">
+        <field name="evento">onchange</field>
+        <field name="mensajeerror">El prima no es valido</field>
+        <field name="usadependencias">True</field>
+        <field name="codigoejecutar">
+valor1 = '${VALOR}'
+valor2 = '${PRISMA2}'
+tupla1 = ["U","D"]
+tupla2 = ["O","I"]
+mensaje = ''
+if (valor1 in tupla1 and valor2 in tupla1)or (valor1 in tupla2 and valor2 in tupla2):
+    result = False
+    mensaje  = "Si el prisma1 es: "+valor1+" el prisma2 no puede ser: " +valor2
+else:
+    result = True
+        </field>
+        <field name="parametros_ids" eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_para_prismaizqueirda2')])]" />
+    </record>
+    <record id="orden_trabajo_validacion_val_prismaizqueirdo1" model="orden_trabajo.validacion">
+        <field name="name">Validar prismas izquierdo 1</field>
+        <field name="nombrecampo">prisma_izquierda_1</field>
+        <field name="identificador">prisma_izquierda_1</field>
+        <field name="condiciones_ids"  eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_condicion_validarprismaizquierdo1')])]"/>
+    </record>
+    <!--Fin validacion de prismaizquierda 1-->
+
+    <!--Inicio validacion de prisma izquierdo 2-->
+    <record id="orden_trabajo_validacion_para_prismaizqueirda1" model="orden_trabajo.parametro">
+        <field name="name">prisma_izquierda_1</field>
+        <field name="nombreclave">prisma_izquierda_1</field>
+        <field name="llave">${PRISMA1}</field>
+    </record>
+    <record id="orden_trabajo_validacion_condicion_validarprismaizquierdo2" model="orden_trabajo.condicion">
+        <field name="evento">onchange</field>
+        <field name="mensajeerror">El prima no es valido</field>
+        <field name="usadependencias">True</field>
+        <field name="codigoejecutar">
+valor1 = '${PRISMA1}'
+valor2 = '${VALOR}'
+tupla1 = ["U","D"]
+tupla2 = ["O","I"]
+mensaje = ''
+if (valor1 in tupla1 and valor2 in tupla1)or (valor1 in tupla2 and valor2 in tupla2):
+    result = False
+    mensaje  = "Si el prisma1 es: "+valor1+" el prisma2 no puede ser: " +valor2
+else:
+    result = True
+        </field>
+        <field name="parametros_ids" eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_para_prismaizqueirda1')])]" />
+    </record>
+    <record id="orden_trabajo_validacion_val_prismaizqueirdo2" model="orden_trabajo.validacion">
+        <field name="name">Validar prismas izquierdo 2</field>
+        <field name="nombrecampo">prisma_izquierdo_2</field>
+        <field name="identificador">prisma_izquierdo_2</field>
+        <field name="condiciones_ids"  eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_condicion_validarprismaizquierdo2')])]"/>
+    </record>
+    <!--Fin validacion de prismaizquierda 2-->
+
+    <!--Inicio requerido distancia de lejos-->
+    <record id="orden_trabajo_validacion_para_producto_template_id" model="orden_trabajo.parametro">
+        <field name="name">producto_template_id</field>
+        <field name="nombreclave">producto_template_id</field>
+        <field name="llave">${PRODUCTO_DERECHO}</field>
+    </record>
+    <record id="orden_trabajo_validacion_condicion_requeridodistanlejos" model="orden_trabajo.condicion">
+        <field name="evento">required</field>
+        <field name="mensajeerror">El campo es requerido</field>
+        <field name="usadependencias">True</field>
+        <field name="codigoejecutar">
+valordistancia = '${VALOR}'
+product_id = ${PRODUCTO_DERECHO}
+product_lines = self.env["product.template.attribute.line"].search([('product_tmpl_id','=',int(product_id))])
+result = True
+if valordistancia =='':
+    if len(product_lines) > 0:
+        validaciones = product_lines.filtered(lambda r: r.codigo == 'validacion')
+        if len(validaciones) > 0:
+            mensaje = ""
+            sensillo_digital = validaciones.value_ids.filtered(lambda x: x.codigo == 'sensillo_digital' or  x.codigo == 'lente_progesivo')
+            if len(sensillo_digital) > 0:
+                mensaje += "Este campo es requerido."
+                result = False
+        </field>
+        <field name="parametros_ids" eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_para_producto_template_id')])]" />
+    </record>
+    <record id="orden_trabajo_validacion_val_requedistancialejos" model="orden_trabajo.validacion">
+        <field name="name">Requerido distancia lejos derecho</field>
+        <field name="nombrecampo">oj_derecho_dp_lejos</field>
+        <field name="identificador">oj_derecho_dp_lejos</field>
+        <field name="condiciones_ids"  eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_condicion_requeridodistanlejos')])]"/>
+    </record>
+    <!--Fin requerido distancia de lejos-->
+
+    <!--Inicio Requerido Altura Pupilar derecha-->
+    <record id="orden_trabajo_validacion_condicion_requeridopupilarderecha" model="orden_trabajo.condicion">
+        <field name="evento">required</field>
+        <field name="mensajeerror">El campo es requerido</field>
+        <field name="usadependencias">True</field>
+        <field name="codigoejecutar">
+valoralturap = '${VALOR}'
+product_id = ${PRODUCTO_DERECHO}
+product_lines = self.env["product.template.attribute.line"].search([('product_tmpl_id','=',int(product_id))])
+result = True
+if valoralturap =='':
+    if len(product_lines) > 0:
+        validaciones = product_lines.filtered(lambda r: r.codigo == 'validacion')
+        if len(validaciones) > 0:
+            mensaje = ""
+            sensillo_digital = validaciones.value_ids.filtered(lambda x: x.codigo == 'sensillo_digital' or  x.codigo == 'lente_progesivo')
+            if len(sensillo_digital) > 0:
+                mensaje += "Este campo es requerido."
+                result = False
+        </field>
+        <field name="parametros_ids" eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_para_producto_template_id')])]" />
+    </record>
+    <record id="orden_trabajo_validacion_val_alturapupilarderecha" model="orden_trabajo.validacion">
+        <field name="name">Requerido Altura Pupilar derecha</field>
+        <field name="nombrecampo">oj_derecho_altura_pupilar</field>
+        <field name="identificador">oj_derecho_altura_pupilar</field>
+        <field name="condiciones_ids"  eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_condicion_requeridopupilarderecha')])]"/>
+    </record>
+    <!--Fin Requerido Altura Pupilar derecha-->
+
+    <!--Inicio Requerido Distancia de cerca-->
+    <record id="orden_trabajo_validacion_condicion_requeridodistanciadecerca" model="orden_trabajo.condicion">
+        <field name="evento">required</field>
+        <field name="mensajeerror">El campo es requerido</field>
+        <field name="usadependencias">True</field>
+        <field name="codigoejecutar">
+valordistancia = '${VALOR}'
+product_id = ${PRODUCTO_DERECHO}
+product_lines = self.env["product.template.attribute.line"].search([('product_tmpl_id','=',int(product_id))])
+result = True
+if valordistancia =='':
+    if len(product_lines) > 0:
+        validaciones = product_lines.filtered(lambda r: r.codigo == 'validacion')
+        if len(validaciones) > 0:
+            mensaje = ""
+            sensillo_digital = validaciones.value_ids.filtered(lambda x: x.codigo == 'vision_sencilla' or  x.codigo == 'lente_bifocal' or x.codigo=='vision_cercana')
+            if len(sensillo_digital) > 0:
+                mensaje += "Este campo es requerido."
+                result = False
+        </field>
+        <field name="parametros_ids" eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_para_producto_template_id')])]" />
+    </record>
+    <record id="orden_trabajo_validacion_val_distanciacerca" model="orden_trabajo.validacion">
+        <field name="name">Requerido Distancia de cerca</field>
+        <field name="nombrecampo">oj_derecho_dp_cerca</field>
+        <field name="identificador">oj_derecho_dp_cerca</field>
+        <field name="condiciones_ids"  eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_condicion_requeridodistanciadecerca')])]"/>
+    </record>
+    <!--Fin Requerido Altura Pupilar derecha-->
+
+     <!--Inicio Requerido oblea derecha-->
+    <record id="orden_trabajo_validacion_condicion_requeridoalturaobleaderecha" model="orden_trabajo.condicion">
+        <field name="evento">required</field>
+        <field name="mensajeerror">El campo es requerido</field>
+        <field name="usadependencias">True</field>
+        <field name="codigoejecutar">
+valordistancia = '${VALOR}'
+product_id = ${PRODUCTO_DERECHO}
+product_lines = self.env["product.template.attribute.line"].search([('product_tmpl_id','=',int(product_id))])
+result = True
+if valordistancia =='':
+    if len(product_lines) > 0:
+        validaciones = product_lines.filtered(lambda r: r.codigo == 'validacion')
+        if len(validaciones) > 0:
+            mensaje = ""
+            sensillo_digital = validaciones.value_ids.filtered(lambda x: x.codigo == 'vision_sencilla' or  x.codigo == 'lente_bifocal' or x.codigo=='vision_cercana')
+            if len(sensillo_digital) > 0:
+                mensaje += "Este campo es requerido."
+                result = False
+        </field>
+        <field name="parametros_ids" eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_para_producto_template_id')])]" />
+    </record>
+    <record id="orden_trabajo_validacion_val_alturaobleaderecha" model="orden_trabajo.validacion">
+        <field name="name">Requerido altura oblea derecho.</field>
+        <field name="nombrecampo">oj_derecho_altura_oblea</field>
+        <field name="identificador">oj_derecho_altura_oblea</field>
+        <field name="condiciones_ids"  eval="[(6, 0, [ ref('orden_trabajo.orden_trabajo_validacion_condicion_requeridoalturaobleaderecha')])]"/>
+    </record>
+    <!--Fin Requerido Altura oblea derecha-->
+
+<!--#######################################################################################################################################-->
 </odoo>

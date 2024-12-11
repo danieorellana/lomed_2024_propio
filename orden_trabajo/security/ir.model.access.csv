@@ -2,3 +2,7 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 orden_trabajo_orden,orden_trabajo_orden,model_orden_trabajo_orden,base.group_user,1,1,1,1
 orden_trabajo_tipo_orden,orden_trabajo_tipo_orden,model_orden_trabajo_tipo_orden,base.group_user,1,1,1,1
 orden_trabajo_disenio_lente,orden_trabajo_disenio_lente,model_orden_trabajo_disenio_lente,base.group_user,1,1,1,1
+orden_trabajo_validacion,orden_trabajo_validacion,model_orden_trabajo_validacion,base.group_user,1,1,1,1
+orden_trabajo_parametro,orden_trabajo_parametro,model_orden_trabajo_parametro,base.group_user,1,1,1,1
+orden_trabajo_condicion,orden_trabajo_condicion,model_orden_trabajo_condicion,base.group_user,1,1,1,1
+orden_trabajo_configuracion_lente,orden_trabajo_configuracion_lente,model_orden_trabajo_configuracion_lente,base.group_user,1,1,1,1

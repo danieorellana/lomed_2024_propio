@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+        <record id="orden_trabajo_parametros_view_tree" model="ir.ui.view">
+            <field name="name">orden_trabajo_parametros_view_tree</field>
+            <field name="model">orden_trabajo.parametro</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                    <field name="nombreclave" />
+                    <field name="llave" />
+                </tree>
+            </field>
+        </record>
+        <record id="orden_trabajo_parametros_view_form" model="ir.ui.view">
+            <field name="name">orden_trabajo_parametros_view_form</field>
+            <field name="model">orden_trabajo.parametro</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1" />
+                            <field name="nombreclave" required="1" />
+                            <field name="llave" required="1" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

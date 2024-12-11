@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+
+        <record id="validacion_action" model="ir.actions.act_window">
+            <field name="name">Validacion de orden de trabajo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">orden_trabajo.validacion</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="orden_trabajo_validacion_view_tree" model="ir.ui.view">
+            <field name="name">orden_trabajo_validacion_view_tree</field>
+            <field name="model">orden_trabajo.validacion</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                    <field name="nombrecampo" />
+                    <field name="identificador" />
+                </tree>
+            </field>
+        </record>
+        <record id="orden_trabajo_validacion_view_form" model="ir.ui.view">
+            <field name="name">orden_trabajo_validacion_view_form</field>
+            <field name="model">orden_trabajo.validacion</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name" required="1" />
+                            <field name="nombrecampo" required="1" />
+                            <field name="identificador" required="1" />
+                        </group>
+                        <separator string="Condiciones" />
+                        <field name="condiciones_ids" >
+                            <tree>
+                                <field name="evento" />
+                                <field name="mensajeerror" />
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <menuitem
+            id="validacion_orden_trabajo"
+            parent="sale.sale_menu_root"
+            name="Validacion orden trabajo"
+            action="orden_trabajo.validacion_action"
+            sequence="1"
+        />
+    </data>
+</odoo>

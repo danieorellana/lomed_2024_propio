@@ -33,12 +33,25 @@
         <template id="formulario">
             <t t-call="website.layout">
                 <div id="wrap" class="oe_structure oe_empty">
-                    <form action="/orden_trabajo/crear/" method="post"
+                    <form id="ordentrabajoform" name='ordentrabajoform' action="/orden_trabajo/crear/" method="post"
                         class="o_mark_required " enctype="multipart/form-data"
                         data-model_name="orden_trabajo.orden" data-mark="*"
                         data-pre-fill="true"
                         data-success_page="/orden_trabajo/success">
-                        <div class="container" style="background-color: #dadada; margin-top:20px; margin-bottom:20px;">
+                        <style>
+
+                            .complex_config{
+                            display:none;
+                            }
+                        </style>
+<div id="loading-icon1" name="loading-icon1" style=" z-index: 1000; display:none;  position: sticky;top: 50%;left: 50%;" class="flex text-center">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+                        <div class="container"
+                            style="background-color: #dadada; margin-top:20px; margin-bottom:20px;">
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <span style="text-align: center;">Creacion de nueva orden de
@@ -51,7 +64,8 @@
                                         </label>
                                     </div>
                                     <div class="">
-                                        <input type="date" t-att-value="date" readonly="true"
+                                        <input type="datetime-local" t-att-value="date"
+                                            readonly="true"
                                             class="form-control o_website_form_input"
                                             name="date" />
                                     </div>
@@ -65,9 +79,11 @@
                                     </label>
                                 </div>
                                 <div class="col-md-8">
-                                    <input type="text" required="true"
+                                    <input id="paciente" type="text" required="true"
                                         class="form-control o_website_form_input"
                                         name="paciente" />
+                                    <div class="invalid-tooltip" id="feedback_paciente" />
+
                                 </div>
                             </div>
                             <br />
@@ -78,8 +94,8 @@
                                 <table class="table">
                                     <thead>
                                         <th></th>
-                                        <th  class="text-center">ESFERA</th>
-                                        <th  class="text-center">CILINDRO</th>
+                                        <th class="text-center">ESFERA</th>
+                                        <th class="text-center">CILINDRO</th>
                                         <th class="text-center">EJE</th>
                                         <th class="text-center">ADICCION</th>
                                         <th colspan="2" class="text-center">PRISMA</th>
@@ -88,64 +104,75 @@
                                         <tr>
                                             <td>OJO DERECHO</td>
                                             <td>
-                                                <div class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                <div
+                                                    class="form-group form-field o_website_form_required_custom input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                            <select id="valor_esfera_derecho"
-                                                                name="valor_esfera_derecho"
-                                                                required="True"
-                                                                class="form-control o_website_form_input"
-                                                                style="width: 50px;">
-
-                                                                <option value="plus">&#65291;</option>
-                                                                <option value="minus">&#65293;</option>
-                                                            </select>
-                                                        </div>
-
-
+                                                        <select id="valor_esfera_derecho"
+                                                            name="valor_esfera_derecho"
+                                                            required="True"
+                                                            class="form-control o_website_form_input"
+                                                            style="width: 50px;">
+                                                            <option value="plus">&#65291;</option>
+                                                            <option value="minus">&#65293;</option>
+                                                        </select>
+                                                        <div class="invalid-tooltip"
+                                                            id="feedback_valor_esfera_derecho" />
+                                                    </div>
                                                     <input id="esfera_ojo_derecho" type="number"
                                                         style="width: 110px;"
                                                         class="form-control o_website_form_input"
                                                         step="0.25"
-                                                        name="esfera_ojo_derecho"/>
-                                                <div id="feedback_esfera_ojo_derecho" class="invalid-feedback">
-                                                  </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="form-group form-field o_website_form_required_custom input-group mb-3">
-                                               
-                                                    <div class="input-group-prepend">
-                                                            <select id="valor_cilindro_derecho"
-                                                                name="valor_cilindro_derecho"
-                                                                required="True"
-                                                                class="form-control o_website_form_input"
-                                                                style="width: 50px;">
-                                                                <option value="minus">&#65293;</option>
-                                                                <option value="plus">&#65291;</option>
-                                                            </select>
+                                                        required="True"
+                                                        name="esfera_ojo_derecho" />
+                                                    <div id="feedback_esfera_ojo_derecho"
+                                                        class="invalid-tooltip">
                                                     </div>
-                                                    <input id='cilindro_ojo_derecho' type="number"
-                                                        class="form-control o_website_form_input"
-                                                         step="0.25"
-                                                        name="cilindro_ojo_derecho"
-                                                        style="width: 110px;"
-                                                    />
-                                                    <div class="invalid-feedback" id="feedback_cilindro_ojo_derecho">
-                                                      </div>
                                                 </div>
-                                            </td>
-                                            <td>
-                                                <input id="eje_ojo_derecho" type="number"
-                                                    class="form-control o_website_form_input"
-                                                    name="eje_ojo_derecho" min="0" max="180" />
-                                                    <div id="feedback_eje_ojo_derecho" class="invalid-feedback">
-                                                        
-                                                      </div>
                                             </td>
                                             <td>
                                                 <div
                                                     class="form-group form-field o_website_form_required_custom input-group mb-3">
+
                                                     <div class="input-group-prepend">
+                                                        <select id="valor_cilindro_derecho"
+                                                            name="valor_cilindro_derecho"
+                                                            required="True"
+                                                            class="form-control o_website_form_input"
+                                                            style="width: 50px;">
+                                                            <option value="minus">&#65293;</option>
+                                                            <option value="plus">&#65291;</option>
+                                                        </select>
+                                                        <div id="feedback_valor_cilindro_derecho"
+                                                            class="invalid-tooltip" />
+
+                                                    </div>
+                                                    <input id='cilindro_ojo_derecho' type="number"
+                                                        class="form-control o_website_form_input"
+                                                        step="0.25"
+                                                        name="cilindro_ojo_derecho"
+                                                        style="width: 110px;"
+                                                    />
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_cilindro_ojo_derecho">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                             <div class="input-group has-validation">
+                                                <input id="eje_ojo_derecho" type="number"
+                                                    class="form-control o_website_form_input"
+                                                    name="eje_ojo_derecho" min="0" max="180" />
+                                                <div id="feedback_eje_ojo_derecho"
+                                                    class="invalid-tooltip">
+
+                                                </div>
+                                            </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                    <!--<div
+                                                    class="input-group-prepend">
                                                             <select id="valor_adiccion_derecho"
                                                                 name="valor_adiccion_derecho"
                                                                 required="True"
@@ -155,7 +182,7 @@
                                                                 <option value="minus">&#65293;</option>
 
                                                             </select>
-                                                    </div>
+                                                    </div> -->
                                                     <input id="adiccion_ojo_derecho" type="number"
                                                         class="form-control o_website_form_input"
                                                         name="adiccion_ojo_derecho"
@@ -163,10 +190,11 @@
                                                         min="1" max="3"
                                                         style="width: 110px;"
                                                     />
-                                                    <div id="feedback_adiccion_ojo_derecho" class="invalid-feedback">
-                                                       
-                                                      </div>
+                                                    <div id="feedback_adiccion_ojo_derecho"
+                                                        class="invalid-tooltip">
+
                                                     </div>
+                                                </div>
                                             </td>
                                             <td>
                                                 <div
@@ -178,29 +206,33 @@
                                                             class="form-control o_website_form_input input-group-text"
                                                             name="prisma_derecho_valor1"
                                                             style="width: 110px;" />
-                                                        <div class="invalid-feedback"
-                                                            id="feedback_prisma_derecho_valor1">
-                                                        </div>
-                                                      
+                                                        <div class="invalid-tooltip"
+                                                            id="feedback_prisma_derecho_valor1" />
+
+
                                                     </div>
-                                                
-                                                            <select id="prisma_derecho_1"
-                                                                name="prisma_derecho_1"
-                                                                required="True"
-                                                                class="form-control o_website_form_input"
-                                                                style="width: 70px;">
-                                                                <t t-foreach="prismas" t-as="prisma">
+
+                                                    <select id="prisma_derecho_1"
+                                                        name="prisma_derecho_1"
+                                                        required="True"
+                                                        class="form-control o_website_form_input"
+                                                        dependencias='prisma_derecho_2'
+                                                        style="width: 70px;">
+                                                        <t t-foreach="prismas" t-as="prisma">
                                                             <option
                                                                 t-att-value="prisma['value']"
                                                                 t-esc="prisma['content']" />
-                                                                </t>
-                                                            </select>
-                                                       
+                                                        </t>
+                                                    </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_prisma_derecho_1"></div>
+
 
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                <div
+                                                    class="form-group form-field o_website_form_required_custom input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <input id="prisma_derecho_valor2"
                                                             type="number"
@@ -209,24 +241,27 @@
                                                             name="prisma_derecho_valor2"
                                                             style="width: 110px;"
                                                         />
-                                                        <div class="invalid-feedback"
+                                                        <div class="invalid-tooltip"
                                                             id="feedback_prisma_derecho_valor2">
                                                         </div>
-                                                      
-                                                    </div>                                                       
-                                                            <select id="prisma_derecho_2"
-                                                                name="prisma_derecho_2"
-                                                                required="True"
-                                                                class="form-control o_website_form_input"
-                                                                style="width: 70px;">
-                                                                <t t-foreach="prismas" t-as="prisma">
+
+                                                    </div>
+                                                    <select id="prisma_derecho_2"
+                                                        name="prisma_derecho_2"
+                                                        required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 70px;">
+                                                        <t t-foreach="prismas" t-as="prisma">
                                                             <option
                                                                 t-att-value="prisma['value']"
                                                                 t-esc="prisma['content']" />
-                                                                </t>
-                                                            </select>
-                                                        
-                                                    
+                                                        </t>
+                                                    </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_prisma_derecho_2">
+                                                    </div>
+
+
                                                 </div>
                                             </td>
                                         </tr>
@@ -236,26 +271,30 @@
                                                 <div
                                                     class="form-group form-field o_website_form_required_custom input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                            <select id="valor_esfera_izquierdo"
-                                                                name="valor_esfera_izquierdo"
-                                                                required="True"
-                                                                class="form-control o_website_form_input"
-                                                                style="width: 50px;">
-                                                                <option value="plus">&#65291;</option>
-                                                                <option value="minus">&#65293;</option>
+                                                        <select id="valor_esfera_izquierdo"
+                                                            name="valor_esfera_izquierdo"
+                                                            required="True"
+                                                            class="form-control o_website_form_input"
+                                                            style="width: 50px;">
+                                                            <option value="plus">&#65291;</option>
+                                                            <option value="minus">&#65293;</option>
 
-                                                            </select>
+                                                        </select>
+                                                        <div class="invalid-tooltip"
+                                                            id="feedback_valor_esfera_izquierdo">
+                                                        </div>
                                                     </div>
 
 
                                                     <input id="esfera_ojo_izqueirdo" type="number"
                                                         class="form-control o_website_form_input"
-                                                        name="esfera_ojo_izqueirdo" 
-                                                         step="0.25"
+                                                        name="esfera_ojo_izqueirdo"
+                                                        step="0.25"
                                                         style="width: 110px;"
                                                     />
-                                                    <div id="feedback_esfera_ojo_izqueirdo" class="invalid-feedback">
-                                                      
+                                                    <div id="feedback_esfera_ojo_izqueirdo"
+                                                        class="invalid-tooltip">
+
                                                     </div>
                                                 </div>
                                             </td>
@@ -263,17 +302,19 @@
                                                 <div
                                                     class="form-group form-field o_website_form_required_custom input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                            <select id="valor_cilindro_izquierdo"
-                                                                name="valor_cilindro_izquierdo"
-                                                                required="True"
-                                                                class="form-control o_website_form_input"
-                                                                style="width: 50px;">
-                                                                <option value="minus">&#65293;</option>
-                                                                <option value="plus">&#65291;</option>
+                                                        <select id="valor_cilindro_izquierdo"
+                                                            name="valor_cilindro_izquierdo"
+                                                            required="True"
+                                                            class="form-control o_website_form_input"
+                                                            style="width: 50px;">
+                                                            <option value="minus">&#65293;</option>
+                                                            <option value="plus">&#65291;</option>
 
 
-                                                            </select>
-                                                     </div>
+                                                        </select>
+                                                        <div id="feedback_valor_cilindro_izquierdo"
+                                                            class="invalid-tooltip" />
+                                                    </div>
 
 
                                                     <input id="cilindro_ojo_izquierdo" type="number"
@@ -282,23 +323,25 @@
                                                         step="0.25"
                                                         style="width: 110px;"
                                                     />
-                                                <div class="invalid-feedback" id="feedback_cilindro_ojo_izquierdo">
-                                                    </div>
+                                                    <div id="feedback_valor_cilindro_ojo_izquierdo"
+                                                        class="invalid-tooltip" />
+
                                                 </div>
                                             </td>
                                             <td>
+                                             <div class="input-group has-validation">
                                                 <input id="eje_ojo_izquierdo" type="number"
                                                     class="form-control o_website_form_input"
                                                     name="eje_ojo_izquierdo" min="0" max="180"
                                                 />
-                                                <div id="feedback_eje_ojo_izquierdo" class="invalid-feedback">
-                                                       
-                                                      </div>
+                                                <div id="feedback_eje_ojo_izquierdo"
+                                                    class="invalid-tooltip" />
+                                            </div>
                                             </td>
                                             <td>
                                                 <div
                                                     class="form-group form-field o_website_form_required_custom input-group mb-3">
-                                                    <div class="input-group-prepend">
+                                                    <!-- <div class="input-group-prepend">
                                                             <select id="valor_adicion_izquierdo"
                                                                 name="valor_adicion_izquierdo"
                                                                 required="True"
@@ -307,7 +350,7 @@
                                                                 <option value="plus">&#65291;</option>
                                                                 <option value="minus">&#65293;</option>
                                                             </select>
-                                                    </div>
+                                                    </div>-->
 
 
                                                     <input id='adicion_ojo_izqueirdo' type="number"
@@ -315,12 +358,13 @@
                                                         name="adicion_ojo_izqueirdo" min="1" max="3"
                                                         style="width: 110px;"
                                                         step="0.25" />
-                                                <div id="feedback_adicion_ojo_izqueirdo" class="invalid-feedback">
+                                                    <div id="feedback_adicion_ojo_izqueirdo"
+                                                        class="invalid-tooltip" />
                                                 </div>
-                                            </div>
                                             </td>
                                             <td>
-                                                <div class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                <div
+                                                    class="form-group form-field o_website_form_required_custom input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <input id="prisma_izquierda_valor1"
                                                             type="number"
@@ -329,27 +373,31 @@
                                                             name="prisma_izquierda_valor1"
                                                             style="width: 110px;"
                                                         />
-                                                        <div class="invalid-feedback"
+                                                        <div class="invalid-tooltip"
                                                             id="feedback_prisma_izquierda_valor1">
                                                         </div>
-                                                      
-                                                    </div>    
-                                                            <select id="prisma_izquierda_1"
-                                                                name="prisma_izquierda_1"
-                                                                required="True"
-                                                                class="form-control o_website_form_input"
-                                                                style="width: 70px;">
-                                                                <t t-foreach="prismas" t-as="prisma">
+
+                                                    </div>
+                                                    <select id="prisma_izquierda_1"
+                                                        name="prisma_izquierda_1"
+                                                        required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 70px;">
+                                                        <t t-foreach="prismas" t-as="prisma">
                                                             <option
                                                                 t-att-value="prisma['value']"
                                                                 t-esc="prisma['content']" />
-                                                                </t>
-                                                            </select>
-                                                 
+                                                        </t>
+                                                    </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_prisma_izquierda_1">
+                                                    </div>
+
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="form-group form-field o_website_form_required_custom input-group mb-3">
+                                                <div
+                                                    class="form-group form-field o_website_form_required_custom input-group mb-3">
                                                     <div class="input-group-prepend">
                                                         <input id="prisma_izquierdo_valor2"
                                                             type="number"
@@ -358,23 +406,26 @@
                                                             name="prisma_izquierdo_valor2"
                                                             style="width: 110px;"
                                                         />
-                                                        <div class="invalid-feedback"
+                                                        <div class="invalid-tooltip"
                                                             id="feedback_prisma_izquierdo_valor2">
                                                         </div>
-                                                      
-                                                    </div>    
-                                                       
-                                                            <select id="prisma_izquierdo_2"
-                                                                name="prisma_izquierdo_2"
-                                                                required="True"
-                                                                class="form-control o_website_form_input"
-                                                                style="width: 70px;">
-                                                                <t t-foreach="prismas" t-as="prisma">
+
+                                                    </div>
+
+                                                    <select id="prisma_izquierdo_2"
+                                                        name="prisma_izquierdo_2"
+                                                        required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 70px;">
+                                                        <t t-foreach="prismas" t-as="prisma">
                                                             <option
                                                                 t-att-value="prisma['value']"
                                                                 t-esc="prisma['content']" />
-                                                                </t>
-                                                            </select>
+                                                        </t>
+                                                    </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_prisma_izquierdo_2">
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -385,23 +436,115 @@
                             <h3 class="text-center">
                                 <strong>TIPO DE PRODUCTO </strong>
                             </h3>
+
                             <table class="table">
+                                <thead>
+                                    <th>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox"
+                                                id="flexSwitchCheckChecked"
+                                                name="flexSwitchCheckChecked" />
+                                            <label class="form-check-label"
+                                                for="flexSwitchCheckChecked">CONFIGURACIÓN POR OJO.</label>
+                                        </div>
+                                    </th>
+                                    <th class="text-center complex_config">OJO DERECHO</th>
+                                    <th class="text-center single_config">GENERAL</th>
+                                    <th class="text-center complex_config">OJO IZQUIERDO</th>
+                                </thead>
                                 <tr>
-                                    <td>TIPO DE ORDEN:</td>
-                                    <td>
+                                    <td class="single_config">TIPO DE ORDEN:</td>
+                                    <td class="single_config">
                                         <div
                                             class="form-group form-field o_website_form_required_custom">
                                             <div class="col-md-12" style="margin-bottom:10px;">
-                                                <div class="col-md-5 col-sm-8">
-                                                    <select id="tipo_orden_id" name="tipo_orden_id"
+                                                <div class="col-sm-12">
+                                                    <select name="tipo_orden_id"
                                                         required="True"
                                                         class="form-control o_website_form_input"
-                                                        style="width: 432px; height: 35px;">
+                                                        style="width: 100%; height: 35px;">
                                                         <t t-foreach="tipo_ordenes" t-as="tipo">
                                                             <option t-att-value="tipo.id"
                                                                 t-esc="tipo.name" />
                                                         </t>
                                                     </select>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center complex_config" colspan="3">
+
+                                        <div
+                                            class="form-group form-field row o_website_form_required_custom"
+                                            style="margin-botton:10px;">
+
+                                            <label for="tipo_orden_id"
+                                                class="text-center col-sm-6 col-form-label">TIPO DE
+                                                ORDEN:</label>
+                                            <div class="col-sm-6">
+                                                <select name="tipo_orden_id"
+                                                    required="True"
+                                                    class="form-control o_website_form_input"
+                                                    style="width: 50%; height: 35px;">
+                                                    <t t-foreach="tipo_ordenes" t-as="tipo">
+                                                        <option t-att-value="tipo.id"
+                                                            t-esc="tipo.name" />
+                                                    </t>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>PRODUCTO</td>
+                                    <td>
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-sm-12">
+
+                                                    <select id="producto_template_id"
+                                                        name="producto_template_id"
+                                                        dependencias="tratamientos_id,color_lente_id,disenio_lente_id"
+                                                        required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 100%; height: 35px;">
+                                                        <option value=""></option>
+                                                        <t t-foreach="productos" t-as="product">
+                                                            <option t-att-value="product.id"
+                                                                t-esc="product.name" />
+                                                        </t>
+                                                    </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_producto_template_id">
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="complex_config">
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-sm-12">
+
+                                                    <select id="producto_template_id_2"
+                                                        name="producto_template_id_2"
+                                                        dependencias="tratamientos_id,color_lente_id,disenio_lente_id"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 100%; height: 35px;">
+                                                        <option value=""></option>
+                                                        <t t-foreach="productos" t-as="product">
+                                                            <option t-att-value="product.id"
+                                                                t-esc="product.name" />
+                                                        </t>
+                                                    </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_producto_template_id_2">
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -413,16 +556,40 @@
                                         <div
                                             class="form-group form-field o_website_form_required_custom">
                                             <div class="col-md-12" style="margin-bottom:10px;">
-                                                <div class="col-md-5 col-sm-8">
+                                                <div class="col-sm-12">
                                                     <select id="material_lente_id"
                                                         name="material_lente_id" required="True"
                                                         class="form-control o_website_form_input"
-                                                        style="width: 432px; height: 35px;">
+                                                        style="width: 100%; height: 35px;">
                                                         <t t-foreach="material_lente" t-as="tipo">
                                                             <option t-att-value="tipo.id"
                                                                 t-esc="tipo.x_name" />
                                                         </t>
                                                     </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_material_lente_id">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="complex_config">
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-sm-12">
+                                                    <select id="material_lente_id_2"
+                                                        name="material_lente_id_2"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 100%; height: 35px;">
+                                                        <t t-foreach="material_lente" t-as="tipo">
+                                                            <option t-att-value="tipo.id"
+                                                                t-esc="tipo.x_name" />
+                                                        </t>
+                                                    </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_material_lente_id_2">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -434,12 +601,32 @@
                                         <div
                                             class="form-group form-field o_website_form_required_custom">
                                             <div class="col-md-12" style="margin-bottom:10px;">
-                                                <div class="col-md-5 col-sm-8">
+                                                <div class="col-sm-12">
                                                     <select id="tipo_lente_id" name="tipo_lente_id"
                                                         required="True"
                                                         class="form-control o_website_form_input"
-                                                        style="width: 432px; height: 35px;">
+                                                        style="width: 100%; height: 35px;">
                                                     </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_tipo_lente_id">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="complex_config">
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-sm-12">
+                                                    <select id="tipo_lente_id_2"
+                                                        name="tipo_lente_id_2"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 100%; height: 35px;">
+                                                    </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_tipo_lente_id_2">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -451,59 +638,86 @@
                                         <div
                                             class="form-group form-field o_website_form_required_custom">
                                             <div class="col-md-12" style="margin-bottom:10px;">
-                                                <div class="col-md-5 col-sm-8">
+                                                <div class="col-sm-12">
                                                     <select id="disenio_lente_id"
                                                         name="disenio_lente_id" required="True"
                                                         class="form-control o_website_form_input"
-                                                        style="width: 432px; height: 35px;">
+                                                        style="width: 100%; height: 35px;">
                                                         <t t-foreach="disenios" t-as="disenio">
                                                             <option t-att-value="disenio.id"
                                                                 t-esc="disenio.name" />
                                                         </t>
                                                     </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_disenio_lente_id">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>PRODUCTO</td>
-                                    <td>
+                                    <td class="complex_config">
                                         <div
                                             class="form-group form-field o_website_form_required_custom">
                                             <div class="col-md-12" style="margin-bottom:10px;">
-                                                <div class="col-md-5 col-sm-8">
-                                                   
-                                                        <select id="producto_template_id" name="producto_template_id" required="True" class="form-control o_website_form_input"
-                                                        style="width: 432px; height: 35px;">
-                                                        <option value=""></option>
-                                                        <t t-foreach="productos" t-as="product">
-                                                            <option t-att-value="product.id"
-                                                                t-esc="product.name" />
+                                                <div class="col-sm-12">
+                                                    <select id="disenio_lente_id_2"
+                                                        name="disenio_lente_id_2"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 100%; height: 35px;">
+                                                        <t t-foreach="disenios" t-as="disenio">
+                                                            <option t-att-value="disenio.id"
+                                                                t-esc="disenio.name" />
                                                         </t>
-                                                        </select>
-                                                
+                                                    </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_disenio_lente_id_2">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td>TRATAMIENTOS</td>
                                     <td>
                                         <div
                                             class="form-group form-field o_website_form_required_custom">
                                             <div class="col-md-12" style="margin-bottom:10px;">
-                                                <div class="col-md-5 col-sm-8">
+                                                <div class="col-sm-12">
                                                     <select id="tratamientos_id"
                                                         name="tratamientos_id" required="True"
                                                         class="form-control o_website_form_input"
-                                                        style="width: 432px; height: 35px;">
+                                                        style="width: 100%; height: 35px;">
                                                         <t t-foreach="tratamientos" t-as="tipo">
                                                             <option t-att-value="tipo.id"
                                                                 t-esc="tipo.x_name" />
                                                         </t>
                                                     </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_tratamientos_id">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="complex_config">
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-sm-12">
+                                                    <select id="tratamientos_id_2"
+                                                        name="tratamientos_id_2"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 100%; height: 35px;">
+                                                        <t t-foreach="tratamientos" t-as="tipo">
+                                                            <option t-att-value="tipo.id"
+                                                                t-esc="tipo.x_name" />
+                                                        </t>
+                                                    </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_tratamientos_id_2">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -515,16 +729,64 @@
                                         <div
                                             class="form-group form-field o_website_form_required_custom">
                                             <div class="col-md-12" style="margin-bottom:10px;">
-                                                <div class="col-md-5 col-sm-8">
+                                                <div class="col-sm-12">
                                                     <select id="color_lente_id"
                                                         name="color_lente_id" required="True"
                                                         class="form-control o_website_form_input"
-                                                        style="width: 432px; height: 35px;">
+                                                        style="width: 100%; height: 35px;">
                                                         <t t-foreach="color" t-as="tipo">
                                                             <option t-att-value="tipo.id"
                                                                 t-esc="tipo.x_name" />
                                                         </t>
                                                     </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_color_lente_id">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="complex_config">
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-sm-12">
+                                                    <select id="color_lente_id_2"
+                                                        name="color_lente_id_2"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 100%; height: 35px;">
+                                                        <t t-foreach="color" t-as="tipo">
+                                                            <option t-att-value="tipo.id"
+                                                                t-esc="tipo.x_name" />
+                                                        </t>
+                                                    </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_color_lente_id_2">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>COLOR DE ANTIREFLEJANTE</td>
+                                    <td colspan="2">
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-sm-12">
+                                                    <select id="color_antireflejante_id"
+                                                        name="color_antireflejante_id"
+                                                        required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 100%; height: 35px;">
+                                                        <option selected="selected" value="na">NA</option>
+                                                        <option value="verde">Verde</option>
+                                                        <option value="azul">Azul</option>
+                                                    </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_color_antireflejante_id">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -533,10 +795,13 @@
                                 <tr>
 
                                     <td>BASE EN USO:</td>
-                                    <td>
-                                        <textarea id="nota_base_uso"
-                                            class="form-control o_website_form_input"
-                                            name="nota_base_uso" />
+                                    <td colspan="2">
+                                        <div class="input-group has-validation">
+                                            <textarea id="nota_base_uso"
+                                                class="form-control o_website_form_input"
+                                                name="nota_base_uso" />
+                                            <div class="invalid-tooltip" id="feeback_nota_base_uso"></div>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
@@ -555,71 +820,93 @@
                                     <tr>
                                         <td>OJO DERECHO </td>
                                         <td>
+                                         <div class="input-group has-validation">
                                             <input type="number"
                                                 class="form-control o_website_form_input"
+                                                id="oj_derecho_altura_oblea"
                                                 name="oj_derecho_altura_oblea" min="0" max="100" />
+                                            <div class="invalid-tooltip"
+                                                id="feedback_oj_derecho_altura_oblea">
+                                            </div>
+                                        </div>
                                         </td>
                                         <td>
+                                         <div class="input-group has-validation">
                                             <input id="oj_derecho_altura_pupilar" type="number"
                                                 class="form-control o_website_form_input"
                                                 name="oj_derecho_altura_pupilar" min="0" max="40"
                                                 step="0.50" />
-                                                <div class="invalid-feedback"
+                                            <div class="invalid-tooltip"
                                                 id="feedback_oj_derecho_altura_pupilar">
                                             </div>
+                                        </div>
                                         </td>
                                         <td>
-                                            <input id="oj_derecho_dp_lejos" type="number"
-                                                class="form-control o_website_form_input"
-                                                name="oj_derecho_dp_lejos" min="20" max="40"
-                                                step="0.50" />
-                                                <div class="invalid-feedback"
-                                                id="feedback_oj_derecho_dp_lejos">
+                                            <div class="input-group has-validation">
+                                                <input id="oj_derecho_dp_lejos" type="number"
+                                                    class="form-control o_website_form_input"
+                                                    name="oj_derecho_dp_lejos" min="20" max="40"
+                                                    step="0.50" />
+                                                <div class="invalid-tooltip"
+                                                    id="feedback_oj_derecho_dp_lejos">
+                                                </div>
                                             </div>
                                         </td>
                                         <td>
+                                         <div class="input-group has-validation">
                                             <input id="oj_derecho_dp_cerca" type="number"
                                                 class="form-control o_website_form_input"
                                                 name="oj_derecho_dp_cerca" min="20" max="35"
                                                 step="0.50" />
-                                                <div class="invalid-feedback"
+                                            <div class="invalid-tooltip"
                                                 id="feedback_oj_derecho_dp_cerca">
                                             </div>
+                                        </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>OJO IZQUIERDO </td>
                                         <td>
-                                            <input type="number"
-                                                class="form-control o_website_form_input"
-                                                name="oj_izquierdo_altura_oblea" min="0" max="100" />
+                                            <div class="input-group has-validation">
+                                                <input type="number"
+                                                    class="form-control o_website_form_input"
+                                                    id="oj_izquierdo_altura_oblea"
+                                                    name="oj_izquierdo_altura_oblea" min="0"
+                                                    max="100" />
+                                                <div class="invalid-tooltip"
+                                                    id="feedback_oj_izquierdo_altura_oblea">
+                                                </div>
+                                            </div>
                                         </td>
                                         <td>
-                                            <input id="oj_izquierdo_altura_pupilar" type="number"
+                                         <div class="input-group has-validation">                                            <input id="oj_izquierdo_altura_pupilar" type="number"
                                                 class="form-control o_website_form_input"
                                                 name="oj_izquierdo_altura_pupilar" min="0" max="40"
                                                 step="0.50" />
-                                                <div class="invalid-feedback"
+                                            <div class="invalid-tooltip"
                                                 id="feedback_oj_izquierdo_altura_pupilar">
                                             </div>
+                                        </div>
                                         </td>
                                         <td>
-                                            <input id="oj_izquierdo_dp_lejos" type="number"
+                                         <div class="input-group has-validation">                                            <input id="oj_izquierdo_dp_lejos" type="number"
                                                 class="form-control o_website_form_input"
                                                 name="oj_izquierdo_dp_lejos" min="20" max="40"
                                                 step="0.50" />
-                                                <div class="invalid-feedback"
+                                            <div class="invalid-tooltip"
                                                 id="feedback_oj_izquierdo_dp_lejos">
                                             </div>
-                                                
+                                        </div>
                                         </td>
                                         <td>
+                                         <div class="input-group has-validation">
                                             <input id="oj_izquierdo_dp_cerca" type="number"
                                                 class="form-control o_website_form_input"
                                                 name="oj_izquierdo_dp_cerca" min="20" max="35"
                                                 step="0.50" />
-                                                <div class="invalid-feedback"
+                                            <div class="invalid-tooltip"
                                                 id="feedback_oj_izquierdo_dp_cerca">
+                                            </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -632,12 +919,18 @@
                                 <tr>
                                     <td rowspan="2">ARO:</td>
                                     <td>
+                                     <div class="input-group has-validation">
                                         <input type="text" id="marca" name="marca"
                                             class="form-control o_website_form_input" />
+                                        <div class="invalid-tooltip" id="feedback_marca"/>
+                                    </div>
                                     </td>
                                     <td colspan="2">
+                                     <div class="input-group has-validation">
                                         <input type="text" id="codigo_disenio" name="codigo_disenio"
                                             class="form-control o_website_form_input" />
+                                            <div class="invalid-tooltip" id="feedback_codigo_disenio" />
+                                    </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -658,6 +951,9 @@
                                                         <option value="nuevo">Nuevo</option>
                                                         <option value="usado">Usado</option>
                                                     </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_estado_aro">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -679,6 +975,9 @@
                                                                 t-esc="tipo.x_name" />
                                                         </t>
                                                     </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_color_aro_id">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -702,12 +1001,38 @@
                                                                 t-esc="tipo['content']" />
                                                         </t>
                                                     </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_tipo_aro">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td />
-                                    <td />
+                                    <td>
+                                        Tipo de material de aro
+                                    </td>
+                                    <td>
+                                        <div
+                                            class="form-group form-field o_website_form_required_custom">
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <div class="col-md-5 col-sm-8">
+                                                    <select id="tipo_aro_material_id"
+                                                        name="tipo_aro_material_id"
+                                                        required="True"
+                                                        class="form-control o_website_form_input"
+                                                        style="width: 432px; height: 35px;">
+                                                        <t t-foreach="material_aro" t-as="tipo">
+                                                            <option t-att-value="tipo.id"
+                                                                t-esc="tipo.x_name" />
+                                                        </t>
+                                                    </select>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_tipo_aro_material_id">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="4">
@@ -736,6 +1061,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
+                                                 <div class="input-group has-validation">
                                                     <input id="medida_h" type="number"
                                                         class="form-control o_website_form_input"
                                                         min="20"
@@ -744,11 +1070,13 @@
                                                         name="medida_h"
                                                         style="width: 110px;"
                                                     />
-                                                        <div class="invalid-feedback"
-                                                            id="feedback_medida_h">
-                                                        </div>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_medida_h">
+                                                    </div>
+                                                    </div>
                                                 </td>
                                                 <td>
+                                                 <div class="input-group has-validation">
                                                     <input
                                                         id="medida_v"
                                                         min="15"
@@ -758,11 +1086,13 @@
                                                         class="form-control o_website_form_input"
                                                         style="width: 110px;"
                                                         name="medida_v" />
-                                                        <div class="invalid-feedback"
+                                                    <div class="invalid-tooltip"
                                                         id="feedback_medida_v">
+                                                    </div>
                                                     </div>
                                                 </td>
                                                 <td>
+                                                 <div class="input-group has-validation">
                                                     <input type="number"
                                                         id="medida_d"
                                                         min="20"
@@ -771,11 +1101,13 @@
                                                         class="form-control o_website_form_input"
                                                         style="width: 110px;"
                                                         name="medida_d" />
-                                                        <div class="invalid-feedback"
+                                                    <div class="invalid-tooltip"
                                                         id="feedback_medida_d">
+                                                    </div>
                                                     </div>
                                                 </td>
                                                 <td>
+                                                 <div class="input-group has-validation">
                                                     <input type="number"
                                                         id="medida_p"
                                                         min="5"
@@ -784,12 +1116,13 @@
                                                         class="form-control o_website_form_input"
                                                         style="width: 110px;"
                                                         name="medida_p" />
-                                                        <div class="invalid-feedback"
+                                                    <div class="invalid-tooltip"
                                                         id="feedback_medida_p">
+                                                    </div>
                                                     </div>
                                                 </td>
                                             </tr>
-                                          
+
                                         </table>
                                     </td>
                                 </tr>
@@ -803,54 +1136,74 @@
                                             </tr>
                                             <tr>
                                                 <td>
+                                                 <div class="input-group has-validation">
                                                     <input type="number"
                                                         id="angulo_panoramico"
                                                         min="0"
                                                         max="35"
                                                         class="form-control o_website_form_input"
                                                         name="angulo_panoramico" />
-                                                        <div class="invalid-feedback"
+                                                    <div class="invalid-tooltip"
                                                         id="feedback_angulo_panoramico">
+                                                    </div>
                                                     </div>
                                                 </td>
                                                 <td>
+                                                 <div class="input-group has-validation">
                                                     <input type="number"
                                                         id="angulo_pantoscopico"
                                                         min="0"
                                                         max="12"
                                                         class="form-control o_website_form_input"
                                                         name="angulo_pantoscopico" />
-                                                            <div class="invalid-feedback"
-                                                            id="feedback_angulo_pantoscopico">
-                                                        </div>
+                                                    <div class="invalid-tooltip"
+                                                        id="feedback_angulo_pantoscopico">
+                                                    </div>
+                                                    </div>
                                                 </td>
                                                 <td>
+                                                 <div class="input-group has-validation">
                                                     <input type="number"
                                                         id="distancia_vertice"
                                                         class="form-control o_website_form_input"
                                                         name="distancia_vertice" />
-                                                        <div class="invalid-feedback"
+                                                    <div class="invalid-tooltip"
                                                         id="feedback_distancia_vertice">
                                                     </div>
-                                            </td>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         </table>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5"> OBSERVACIONES: <textarea
+                                    <td colspan="5"> OBSERVACIONES:
+                                     <div class="input-group has-validation">
+                                    <textarea
                                             class="form-control o_website_form_input"
                                             name="observaciones" />
+                                            <div class="invalid-tooltip" id="feeback_observaciones" />
+                                    </div>
                                     </td>
                                 </tr>
                             </table>
                             <div class="form-group row">
                                 <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7 text-center">
-                                    <button type="submit" onsubmit="return false;" class="btn btn-primary btn-lg btn-block o_website_form_send o_default_snippet_text ">Enviar</button>
+                                    <button type="submit"
+                                        class="btn btn-primary btn-lg btn-block o_website_form_send o_default_snippet_text ">
+                                        Enviar</button>
                                     <span id="o_website_form_result" />
                                 </div>
                             </div>
+                            <div style="display: none;" id="errormensaje" class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading" id="error-title">Algunas validaciones no
+                                    fueron cumplidas!</h4>
+                                <p id="error-body">
+                                    Revise los campos que tienen cuadros rojos con observacioens.
+                                </p>
+                            </div>
                         </div>
+                         <input type="hidden" id="isvalid" name="isvalid" t-att-value="1" />
                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                     </form>
                 </div>
@@ -862,9 +1215,9 @@
             <t t-call="website.layout">
                 <div id="wrap" class="oe_structure oe_empty">
                     <div class="container" style="background-color: #dadada;">
-                    <div class="jumbotron text-center">
-                        <h1>Su orden ha sido enviada.</h1>
-                    </div>
+                        <div class="jumbotron text-center">
+                            <h1>Su orden ha sido enviada.</h1>
+                        </div>
                     </div>
                 </div>
             </t>
@@ -875,7 +1228,19 @@
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_only_form_view" />
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='attribute_line_ids']/tree/field[@name='value_ids']" position="after">
+                <xpath expr="//field[@name='attribute_line_ids']/tree/field[@name='value_ids']"
+                    position="after">
+                    <field name="codigo" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_attribute_value_codigo_inherit" model="ir.ui.view">
+            <field name="name">view_attribute_value_codigo_inherit</field>
+            <field name="model">product.attribute</field>
+            <field name="inherit_id" ref="product.product_attribute_view_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='value_ids']/tree/field[@name='name']" position="after">
                     <field name="codigo" />
                 </xpath>
             </field>
@@ -900,10 +1265,12 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="paciente" />
-                    <field name="material_lente_id" />
+                    <!--<field
+                    name="material_lente_id" />-->
                     <field name="optica_id" />
-                   <field name="tipo_orden_id" />
-                    <field name="producto_template_id" />
+                    <field name="tipo_orden_id" />
+                    <!--<field
+                    name="producto_template_id" />-->
                 </tree>
             </field>
         </record>
@@ -914,7 +1281,7 @@
                     <sheet>
                         <group string="Datos generales">
                             <field name="create_date" />
-                            
+
                             <field name="optica_id" />
                             <field name="tipo_orden_id" />
                             <field name="paciente" />
@@ -930,10 +1297,12 @@
                                 <field name="oj_izquierdo_dp_lejos" />
                                 <field name="oj_izquierdo_dp_cerca" />
                                 <field name="valor_esfera_izquierdo" />
-                                <field name="valor_adicion_izquierdo" />
                                 <field name="valor_cilindro_izquierdo" />
                                 <field name="prisma_izquierda_1" />
+                                <field name='prisma_izquierda_valor1' />
                                 <field name="prisma_izquierdo_2" />
+                                <field name="prisma_izquierdo_valor2" />
+
                             </group>
                             <group string="Medidas ojo derecho">
                                 <field name="esfera_ojo_derecho" />
@@ -946,11 +1315,12 @@
                                 <field name="oj_derecho_dp_cerca" />
                                 <field name="valor_esfera_derecho" />
                                 <field name="valor_cilindro_derecho" />
-                                <field name="valor_adiccion_derecho" />
                                 <field name="prisma_derecho_1" />
+                                <field name="prisma_derecho_valor1" />
                                 <field name="prisma_derecho_2" />
+                                <field name="prisma_derecho_valor2" />
                             </group>
-                           
+
                         </group>
                         <group string="Medidas de los angulos">
                             <group>
@@ -980,7 +1350,7 @@
                         <group string="Datos del aro">
                             <group>
                                 <field name="tipo_aro" />
-                               <field name="color_aro_id" />
+                                <field name="color_aro_id" />
                                 <field name="marca" />
                                 <field name="codigo_disenio" />
                             </group>
@@ -988,19 +1358,29 @@
                                 <field name="estado_aro" />
                                 <field name="observaciones_aro" />
                                 <field name="nota_base_uso" />
-                                <field name="producto_template_id" />
+
                             </group>
                         </group>
-                        
-                        <group string="Caracteristicas del lente">
+
+                        <group string="Configuracion del lente">
                             <group>
-                                <field name="color_lente_id" />
-                                <field name="material_lente_id" />
-                                <field name="disenio_lente_id" />
+                                <field name="configuracion_avanzada" widget="boolean_toggle" />
                             </group>
+                            <field name="lente_configuracion_ids">
+                                <tree>
+                                    <field name="tipo" />
+                                    <field name='producto_template_id' />
+                                    <field name="material_lente_id" />
+                                    <field name="tipo_lente_id" />
+                                    <field name="disenio_lente_id" />
+                                    <field name="tratamientos_id" />
+                                    <field name="color_lente_id" />
+                                </tree>
+
+                            </field>
+
                             <group>
-                                <field name="tratamientos_id" />
-                                <field name="tipo_lente_id" />
+                                <field name="color_antireflejante_id" />
                             </group>
                         </group>
                         <group string="Datos extra">
