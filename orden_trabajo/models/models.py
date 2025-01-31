@@ -138,6 +138,6 @@ class product_atribute_value(models.Model):
     _inherit="product.attribute.value"
     codigo  = fields.Char("Codigo")
 
-class company_orden(models.Model):
-    _inherit="res.company"
-    condiciones_servicio = fields.Text("Condiciones de servicio")
+#class company_orden(models.Model):
+#    _inherit="res.company"
+#    condiciones_servicio = fields.Text("Condiciones de servicio")
