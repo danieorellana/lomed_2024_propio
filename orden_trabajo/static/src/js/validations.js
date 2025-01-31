@@ -575,6 +575,15 @@
         event.preventDefault();
      });
 
+     $('#imprimir_reporte').on("click", function(event){
+        event.preventDefault();
+     });
+
+    function applySelect2() {
+        self.$('select.advanced-select').select2();
+        };
+     applySelect2();
+
 
    // $("a[href^='#']:not([href=#])").on("click", website_anchor_smooth_scroll);
 

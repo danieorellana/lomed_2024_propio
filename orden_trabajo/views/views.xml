@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-     
+        <record id="condiciones_servicio" model="ir.ui.view">
+            <field name="name">condiciones_servicio</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//page[@name='general_info']/group['social_media']" position="after">
+                    <group string="Condiciones de servicio">
+                        <field name="condiciones_servicio" widget="text"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>
