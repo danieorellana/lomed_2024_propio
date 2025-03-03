@@ -44,6 +44,7 @@
 					<t t-set="datos" t-value="docs"/>
 			  </t>
 			  
+				<t t-set="background" t-value="'display:none'" />
 
 				<t t-foreach="datos" t-as="l">
 					<t t-if="not datas" >
@@ -51,10 +52,16 @@
 			  		</t>
 					<t t-else="" >
 						<t t-set="p" t-value="l"/>
+						<t t-set="background" t-value="'margin: 3rem;position: absolute; top: 0; left: 0; bottom: 0; z-index: -1; transform: rotate(300deg); -webkit-transform: rotate(300deg); color: #c6afaf;'" />
 			  		</t>
 
 				  <t t-call="web.basic_layout">
 					<div class="page">
+					<t t-if="datas" >
+						<div t-att-class="background">
+           					 VISTA PREVIA
+        				</div>
+					</t>
 					  <!--Estilos-->
 					  <style type="text/css">
 						.section-card{
@@ -105,6 +112,7 @@
 					  <t t-set="type" t-value="dict([('unico','Ambos Ojos'),('derecha','Ojo derecho'),('izquierda','Ojo izquierdo')])"/>
 					  <t t-set="hoop_type" t-value="dict([('semi_aire','Aro semi al aire'),('al_aire','Aro al aire'),('completo','Aro completo')])"/>
 					  
+
 					  <!--Encabezado-->
 					  <div class="row">
 						<div class="col-1"/>
