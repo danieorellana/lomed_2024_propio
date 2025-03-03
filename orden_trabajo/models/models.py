@@ -101,6 +101,81 @@ class orden(models.Model):
             name += self.optica_id.name +' '
         name += self.date.strftime('%Y-%m-%d %H:%M:%S')
         self.name = name
+        
+    def crearjson(self):
+        docs = []
+        orden = {}
+        orden['date'] = self.date.strftime('%Y-%m-%d %H:%M:%S') if self.date else ''
+        orden["paciente"] =  self.paciente if self.paciente else ''
+        orden["valor_esfera_derecho"] =self.valor_esfera_derecho
+        orden["esfera_ojo_derecho"] = self.esfera_ojo_derecho
+        orden["valor_cilindro_derecho"] = self.valor_cilindro_derecho
+        orden["cilindro_ojo_derecho"] = self.cilindro_ojo_derecho
+        orden["eje_ojo_derecho"] = self.eje_ojo_derecho
+        #orden["valor_adiccion_derecho"] = post.get("valor_adiccion_derecho")
+        #orden["adiccion_ojo_derecho"] = post.get("adiccion_ojo_derecho")
+        orden["prisma_derecho_1"] = self.prisma_derecho_1
+        orden["prisma_derecho_2"] = self.prisma_derecho_2
+        orden["valor_esfera_izquierdo"] = self.valor_esfera_izquierdo
+        orden["esfera_ojo_izqueirdo"] = self.esfera_ojo_izqueirdo
+        orden["valor_cilindro_izquierdo"] = self.valor_cilindro_izquierdo
+        orden["cilindro_ojo_izquierdo"] = self.cilindro_ojo_izquierdo
+        orden["eje_ojo_izquierdo"] = self.eje_ojo_izquierdo
+        orden["valor_adicion_izquierdo"] = self.valor_adicion_izquierdo
+        orden["adicion_ojo_izqueirdo"] = self.adicion_ojo_izqueirdo
+        orden["prisma_izquierda_1"] = self.prisma_izquierda_1
+        orden["prisma_izquierdo_2"] = self.prisma_izquierdo_2
+        orden["tipo_orden_id"] = self.tipo_orden_id.name
+        orden["oj_derecho_altura_oblea"] = self.oj_derecho_altura_oblea
+        orden["oj_derecho_dp_lejos"]=self.oj_derecho_dp_lejos
+        orden["oj_derecho_dp_cerca"] = self.oj_derecho_dp_cerca
+        orden["oj_izquierdo_altura_oblea"] = self.oj_izquierdo_altura_oblea
+        orden["oj_izquierdo_altura_pupilar"]= self.oj_izquierdo_altura_pupilar
+        orden["oj_izquierdo_dp_lejos"] = self.oj_izquierdo_dp_lejos
+        orden["oj_izquierdo_dp_cerca"] = self.oj_izquierdo_dp_cerca
+        orden["marca"] = self.marca
+        orden["codigo_disenio"] = self.codigo_disenio
+        orden["estado_aro"] = self.estado_aro
+        orden["color_aro_id"] = self.color_aro_id.x_name
+        orden["medida_h"] = self.medida_h
+        orden["medida_v"] = self.medida_v
+        orden["medida_d"] = self.medida_d
+        orden["medida_p"] = self.medida_p
+        orden["tipo_aro"] = self.tipo_aro
+        orden["observaciones"] = self.observaciones
+        orden["nota_base_uso"] = self.nota_base_uso
+        orden["tipo_aro_material_id"] = self.tipo_aro_material_id.x_name
+        orden["prisma_derecho_valor2"] = self.prisma_derecho_valor2
+        orden["prisma_derecho_valor1"] = self.prisma_derecho_valor1
+        orden["prisma_izquierdo_valor2"] = self.prisma_izquierdo_valor2
+        orden["prisma_izquierda_valor1"] = self.prisma_izquierda_valor1
+        orden['angulo_panoramico'] = self.angulo_panoramico
+        orden['angulo_pantoscopico'] = self.angulo_pantoscopico
+        orden['distancia_vertice'] = self.distancia_vertice
+        orden['color_antireflejante_id'] = self.color_antireflejante_id
+        orden["configuracion_avanzada"] = self.configuracion_avanzada
+        orden["optica_id"] = self.optica_id.name
+        orden["create_uid"] = self.create_uid.partner_id.name if self.create_uid.partner_id else ''
+        orden["x_studio_nombre_comercial"] = self.create_uid.partner_id.x_studio_nombre_comercial
+        orden["create_date"] = datetime.now()
+        orden['_name'] = 'orden_trabajo.orden'
+       
+        orden['env']=self.env
+        configuraciones = []
+        for config in self.lente_configuracion_ids:
+            config1 = {}
+            config1["material_lente_id"] = config.material_lente_id.name
+            config1["tratamientos_id"] = config.tratamientos_id.name
+            config1['tipo_lente_id'] = config.tipo_lente_id.name
+            config1["color_lente_id"] = config.color_lente_id.name
+            config1["producto_template_id"] = config.producto_template_id.name
+            config1["disenio_lente_id"] = config.disenio_lente_id.name
+            config1["tipo"] =  config.tipo
+            configuraciones.append(config1)
+        orden["lente_configuracion_ids"] = configuraciones
+        print("############################")
+        #jsondatos = json.dumps(orden)
+        return orden
 class configuracion_lente(models.Model):
     _name="orden_trabajo.configuracion_lente"
     _description="Esta es la configuracion de lente por ojo"
@@ -138,6 +213,6 @@ class product_atribute_value(models.Model):
     _inherit="product.attribute.value"
     codigo  = fields.Char("Codigo")
 
-#class company_orden(models.Model):
-#    _inherit="res.company"
-#    condiciones_servicio = fields.Text("Condiciones de servicio")
+class company_orden(models.Model):
+    _inherit="res.company"
+    condiciones_servicio = fields.Text("Condiciones de servicio")

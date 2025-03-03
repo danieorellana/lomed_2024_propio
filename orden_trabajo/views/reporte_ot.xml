@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Formato de papel para reporte-->
+        <record id="formato_papel_ot" model="report.paperformat">
+            <field name="name">Carta Limpio</field>
+            <field name="default" eval="True"/>
+            <field name="format">Letter</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+         <!--Report action orden de trabajo-->
+        <report id="reporte_orden_trabajo"
+            string="Reporte Orden Trabajo"
+            model="orden_trabajo.orden"
+            report_type="qweb-pdf"
+            file="orden_trabajo.resumen_ingreso"
+            name="orden_trabajo.resumen_ingreso"
+            menu="False"
+            print_report_name="object.paciente"
+            />
+        <!--Agregando formato de papel al informe-->
+        <record id="orden_trabajo.reporte_orden_trabajo" model="ir.actions.report">
+            <field name="paperformat_id" ref="orden_trabajo.formato_papel_ot"/>
+        </record>
+        
+        <!--Vista para reporte OT-->
+        <template id="resumen_ingreso">
+            <t t-set="company" t-value="env.company"/>
+			  <t t-call="web.html_container">
+			  <!--<span t-esc="data"/>
+			  <span t-esc="datas"/>-->
+			  <t t-if="datas" >
+					<t t-set="datos" t-value="datas"/>
+			  </t>
+			  <t t-else="" >
+					<t t-set="datos" t-value="docs"/>
+			  </t>
+			  
+
+				<t t-foreach="datos" t-as="l">
+					<t t-if="not datas" >
+						<t t-set="p" t-value="l.crearjson()"/>
+			  		</t>
+					<t t-else="" >
+						<t t-set="p" t-value="l"/>
+			  		</t>
+
+				  <t t-call="web.basic_layout">
+					<div class="page">
+					  <!--Estilos-->
+					  <style type="text/css">
+						.section-card{
+							padding: 10px;
+							margin-top: 10px;
+							border:1px solid black;
+							border-radius:10px
+						}
+						.section-card &gt; *{
+						  font-size:13px
+						}
+						thead tr th{
+							border:1px solid black; 
+							text-align:center;
+							vertical-align: middle;
+							}
+						thead{
+							border:1px solid black; 
+							background-color:#1d195c;
+							color:#fff
+							}
+						tbody tr td{
+							border:0.3px solid black; 
+							text-align:center;
+							vertical-align: middle;
+							}
+						.subtitle td{
+							border:0px solid black;
+							font-size:11px;
+							text-align:center;
+							background-color:#e8ebed;
+						}
+						.disclaimer{
+							font-family: Cambria
+							border:1px solid black; 
+							background-color:#1d195c;
+							color:#fff
+							}
+						.disclaimer &gt; *{
+							text-align:left;
+							vertical-align: middle;
+						}
+					  </style>
+					  
+					  <!--Variables generales-->
+					  <t t-set="sign" t-value="dict([('minus','-'),('plus','+')])"/>
+					  <t t-set="position" t-value="dict([('NA','〇'),('U','∇ U'),('D','∆ D'),('O','⊲ O'),('I','⊳ I')])"/>
+					  <t t-set="type" t-value="dict([('unico','Ambos Ojos'),('derecha','Ojo derecho'),('izquierda','Ojo izquierdo')])"/>
+					  <t t-set="hoop_type" t-value="dict([('semi_aire','Aro semi al aire'),('al_aire','Aro al aire'),('completo','Aro completo')])"/>
+					  
+					  <!--Encabezado-->
+					  <div class="row">
+						<div class="col-1"/>
+						<div class="col-3" style="text-align:center">
+						  <img style="height:130px" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
+						</div>
+						<div class="col-2"/>
+						<div class="col-5" style="text-align:right;font-size:14px">
+						  <p style="color:#6f6f70;">Edif. LOMED, 25 Av. Norte #1154, Urb. La Esperanza,<br/>San Salvador.
+						  <br/>PBX: 2234-1650
+						  <br/><img src="/orden_trabajo/static/src/img/wp.png" style="width:20px; margin-right:5px;"/>7744-4507
+						  <br/><b>
+							<table class="table table-sm">
+							  <thead>
+								<th>Día</th>
+								<th>Mes</th>
+								<th>Año</th>
+								<th>Hora</th>
+							  </thead>
+							  <tbody>
+								<tr>
+								  <td><span t-esc="p.get('create_date').strftime('%d')"/></td>
+								  <td><span t-esc="p.get('create_date').strftime('%m')"/></td>
+								  <td><span t-esc="p.get('create_date').strftime('%Y')"/></td>
+								  <td><span t-esc="p.get('create_date').strftime('%H:%M:%S')"/></td>
+								</tr>
+							  </tbody>
+							</table>
+						  </b></p>
+						</div>
+					  </div><!--Fin encabezado-->
+					  
+					  <!--Inicia datos de cliente-->
+					  <div class="row">
+						<div class="col-1"/>
+						<div class="col-10 section-card">
+						  <b>Razón Social:</b> <span t-esc="p.get('create_uid').upper()"/> <b>Código cliente:</b> <span t-if="p.get('x_client_code')" t-esc="p.get('x_client_code')"/><br/>
+						  <b>Nombre comercial:</b> <span t-esc="p.get('x_studio_nombre_comercial')"/><br/>
+						  <b>Paciente:</b> <span t-esc="p.get('paciente')"/>
+						</div>
+					  </div><!--Fin datos de cliente-->
+					  
+					  <!--Inicia datos de receta-->
+					  <div class="row">
+						<div class="col-1"/>
+						<div class="col-10 section-card">
+						  <table class="table table-sm">
+							<thead>
+							  <tr>
+								<th/>
+								<th>ESFERA</th>
+								<th>CILINDRO</th>
+								<th>EJE</th>
+								<th>ADICION</th>
+								<th>PRISMA</th>
+							  </tr>
+							</thead>
+							<tbody>
+							  <tr>
+								<td>OD</td>
+								<td><span t-esc="sign.get(p.get('valor_esfera_derecho'))"/><span t-if="p.get('esfera_ojo_derecho')" t-esc="p.get('esfera_ojo_derecho')"/></td>
+								<td><span t-esc="sign.get(p.get('valor_cilindro_derecho'))"/><span t-if="p.get('cilindro_ojo_derecho')" t-esc="p.get('cilindro_ojo_derecho')"/></td>
+								<td><span t-if="p.get('eje_ojo_derecho')" t-esc="p.get('eje_ojo_derecho')"/></td>
+								<td><span t-if="p.get('adiccion_ojo_derecho')" t-esc="p.get('adiccion_ojo_derecho')"/></td>
+								<td><span t-if="p.get('prisma_derecho_valor1')" t-esc="position.get(p.get('prisma_derecho_1'))"/><span t-if="p.get('prisma_derecho_valor1')" t-esc="p.get('prisma_derecho_valor1')"/>  <span t-if="p.get('prisma_derecho_valor2')" t-esc="position.get(p.get('prisma_derecho_2'))"/><span t-if="p.get('prisma_derecho_valor2')" t-esc="p.get('prisma_derecho_valor2')"/></td>
+							  </tr>
+							  <tr>
+								<td>OI</td>
+								<td><span t-esc="sign.get(p.get('valor_esfera_izquierdo'))"/><span t-if="p.get('esfera_ojo_izqueirdo')" t-esc="p.get('esfera_ojo_izqueirdo')"/></td>
+								<td><span t-esc="sign.get(p.get('valor_cilindro_izquierdo'))"/><span t-if="p.get('cilindro_ojo_izquierdo')" t-esc="p.get('cilindro_ojo_izquierdo')"/></td>
+								<td><span t-if="p.get('eje_ojo_izquierdo')" t-esc="p.get('eje_ojo_izquierdo')"/></td>
+								<td><span t-if="p.get('adicion_ojo_izqueirdo')" t-esc="p.get('adicion_ojo_izqueirdo')"/></td>
+								<td><span t-if="p.get('prisma_izquierda_valor1')" t-esc="position.get(p.get('prisma_izquierda_1'))"/><span t-if="p.get('prisma_izquierda_valor1')" t-esc="p.get('prisma_izquierda_valor1')"/>  <span t-if="p.get('prisma_izquierdo_valor2')" t-esc="position.get(p.get('prisma_izquierdo_2'))"/><span t-if="p.get('prisma_izquierdo_valor2')" t-esc="p.get('prisma_izquierdo_valor2')"/></td>
+							  </tr>
+							</tbody>
+						  </table>
+						</div>
+					  </div><!--Fin datos de receta-->
+					  
+					  <!--Datos del diseño-->
+					  <div class="row">
+						<div class="col-1"/>
+						<div class="col-10 section-card">
+						  <table class="table table-sm">
+							<thead>
+							  <tr>
+								<td style="text-align:center" colspan="7">DATOS DE PRODUCTO</td>
+							  </tr>
+							</thead>
+							<tbody>
+							  <t t-foreach="p.get('lente_configuracion_ids')" t-as="w">
+								<tr>
+								  <td><span t-esc="type.get(w.get('tipo'))"/></td>
+								  <td colspan="4" style="text-align:left"><span t-esc="w.get('producto_template_id')"/></td>
+								</tr>
+								<tr>
+								  <td><span t-esc="w.get('material_lente_id')"/></td>
+								  <td><span t-esc="w.get('tipo_lente_id')"/></td>
+								  <td><span t-esc="w.get('disenio_lente_id')"/></td>
+								  <td><span t-esc="w.get('tratamientos_id')"/></td>
+								  <td><span t-esc="w.get('color_lente_id')"/></td>
+								</tr>
+							  </t>
+							  <tr>
+								<td colspan="3"><b>Antirreflejante: </b></td>
+								<td colspan="4"><span t-esc="p.get('color_antireflejante_id')"/></td>
+							  </tr>
+							  <tr>
+								<td colspan="3"><b>Base en uso: </b></td>
+								<td colspan="4"><span t-esc="p.get('nota_base_uso')"/></td>
+							  </tr>
+							</tbody>
+						  </table>
+						</div>
+					  </div><!--Fin datos del diseño-->
+					  
+					  <!--Inicia medidas del aro-->
+					  <div class="row">
+						<div class="col-1"/>
+						<div class="col-10 section-card">
+						  <table class="table table-sm">
+							<thead>
+							  <tr>
+								<th colspan="8">MEDIDAS Y ARO</th>
+							  </tr>
+							</thead>
+							<tr class="subtitle">
+							  <td rowspan="2">DNP Lejos</td>
+							  <td>Ojo derecho</td>
+							  <td>Ojo izquierdo</td>
+							  <td>Altura pupilar</td>
+							  <td rowspan="2">DP Cerca</td>
+							  <td>Ojo derecho</td>
+							  <td>Ojo izquierdo</td>
+							  <td>Altura oblea</td>
+							</tr>
+							<tr>
+							  <td><span t-esc="p.get('oj_derecho_dp_lejos')"/></td>
+							  <td><span t-esc="p.get('oj_izquierdo_dp_lejos')"/></td>
+							  <td><span t-if="p.get('oj_derecho_altura_pupilar')">OD:</span><span t-if="p.get('oj_derecho_altura_pupilar')" t-esc="p.get('oj_derecho_altura_pupilar')"/><br/><span t-if="p.get('oj_izquierdo_altura_pupilar')">OI:</span><span t-if="p.get('oj_izquierdo_altura_pupilar')" t-esc="p.get('oj_izquierdo_altura_pupilar')"/></td>
+							  <td><span t-esc="p.get('oj_derecho_dp_cerca')"/></td>
+							  <td><span t-esc="p.get('oj_izquierdo_dp_cerca')"/></td>
+							  <td><span t-if="p.get('oj_derecho_altura_oblea')">OD:</span><span t-if="p.get('oj_derecho_altura_oblea')" t-esc="p.get('oj_derecho_altura_oblea')"/><br/><span t-if="p.get('oj_izquierdo_altura_oblea')">OI:</span><span t-if="p.get('oj_izquierdo_altura_oblea')" t-esc="p.get('oj_izquierdo_altura_oblea')"/></td>
+							</tr>
+							<tr>
+							  <td colspan="2"><b>Marca del Aro: </b></td>
+							  <td colspan="2"><span t-esc="p.get('marca')"/></td>
+							  <td colspan="2"><b>Código del diseño: </b></td>
+							  <td colspan="2"><span t-esc="p.get('codigo_disenio')"/></td>
+							</tr>
+							<tr>
+							  <td colspan="2"><b>Tipo de aro: </b></td>
+							  <td colspan="2"><span t-esc="p.get('tipo_aro')"/></td>
+							  <td colspan="2"><b>Estado del aro: </b></td>
+							  <td colspan="2"><span t-esc="p.get('estado_aro')"/></td>
+							</tr>
+							<tr>
+							  <td colspan="2"><b>Color de aro: </b></td>
+							  <td colspan="2"><span t-esc="p.get('color_aro_id')"/></td>
+							  <td colspan="2"><b>Material aro: </b></td>
+							  <td colspan="2"><span t-esc="p.get('tipo_aro_material_id')"/></td>
+							</tr>
+						  </table>
+						</div>
+					  </div><!--Fin medidas de aro-->
+					  
+					  <!--Inicia medidas H D V P-->
+					  <div class="row">
+						<div class="col-1"/>
+						<div class="col-10 section-card">
+						  <table class="table table-sm table-borderless">
+							<tr>
+							  <td style="text-align:left">
+								<img src="/orden_trabajo/static/src/img/h.png" style="width:80px"/><span><b>H: </b></span><span t-esc="p.get('medida_h')"/>
+							  </td>
+							  <td style="text-align:left">
+								<img src="/orden_trabajo/static/src/img/d.png" style="width:80px"/><span><b>D: </b></span><span t-esc="p.get('medida_d')"/>
+							  </td>
+							</tr>
+							<tr>
+							  <td style="text-align:left">
+								<img src="/orden_trabajo/static/src/img/v.png" style="width:80px"/><span><b>V: </b></span><span t-esc="p.get('medida_v')"/>
+							  </td>
+							  <td style="text-align:left">
+								<img src="/orden_trabajo/static/src/img/p.png" style="width:80px"/><span><b>P: </b></span><span t-esc="p.get('medida_p')"/>
+							  </td>
+							</tr>
+						  </table>
+						  <table class="table table-sm">
+							<tbody>
+							  <tr>
+								<td><b>Ángulo panorámico</b><br/><span t-if="p.get('angulo_panoramico')" t-esc="p.get('angulo_panoramico')"/></td>
+								<td><b>Ángulo pantoscópico</b><br/><span t-if="p.get('angulo_pantoscopico')" t-esc="p.get('angulo_pantoscopico')"/></td>
+								<td><b>Distancia al vertice</b><br/><span t-if="p.get('distancia_vertice')" t-esc="p.get('distancia_vertice')"/></td>
+							  </tr>
+							</tbody>
+						  </table>
+						</div>
+					  </div><!--Fin medidas H D V P-->
+					  
+					  <!--Inicia observaciones-->
+					  <div class="row">
+						<div class="col-1"/>
+						<div class="col-10 section-card">
+						  <b>OBSERVACIONES: </b><span t-esc="p.get('observaciones')"/>
+						</div>
+					  </div><!--Fin observaciones-->
+					  
+					  <!--Inicia terminos y condiciones-->
+					  <div class="row">
+						<div class="col-1"/>
+						<div class="col-10 section-card disclaimer">
+						  <b>
+							<p>*Nos reservamos el derecho de realizar montajes en aros usados o dañados<br/>
+							**Todos los parámetros y especificaciones son exclusivas responsabilidad de la optica, LOMED no realizará ningún cambio en el sobre.<br/>
+							***LOMED no se hace responsable por reclamos de ordenes que no fueron inspeccionadas en la entrega de la orden.
+							</p>
+						  </b>
+						</div>
+					  </div><!--Fin terminos y condiciones-->
+					  
+					  <div class="row">
+						<div class="col-1"/>
+						<div class="col-10" style="text-align:center">
+						  <h3>¡LOMED agradece su preferencia!</h3>
+						</div>
+					  </div>
+					</div><!--Fin page-->
+				  </t><!--Fin basic_layout-->
+				</t><!--Fin ciclo docs-->
+			  </t><!--Fin del html_container-->
+        </template>
+    </data>
+</odoo>

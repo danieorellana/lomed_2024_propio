@@ -27,7 +27,8 @@
         'views/views.xml',
         'views/orden_trabajo_condicion.xml',
         'views/orden_trabajo_validacion.xml',
-        'views/orden_trabajo_parametro.xml'
+        'views/orden_trabajo_parametro.xml',
+        'views/reporte_ot.xml'
         
     ],
      'images': [

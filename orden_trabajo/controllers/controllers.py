@@ -52,6 +52,8 @@ class PortalAccount(http.Controller):
     def success(self, **kwargs):
         return request.render('orden_trabajo.success_orden_trabajo')
     
+
+    
     @http.route('/orden_trabajo/get_materiales', type='json', auth='public')
     def get_materiales(self, **post):
         product_line_atri = request.env['product.template.attribute.line'].search([('product_tmpl_id','=',int(post.get('id')))])
@@ -147,6 +149,7 @@ class PortalAccount(http.Controller):
         orden["medida_d"] = post.get("medida_d")
         orden["medida_p"] = post.get("medida_p")
         orden["tipo_aro"] = post.get("tipo_aro")
+        #orden["x_client_code"] = ''
         orden["observaciones"] = post.get("observaciones")
         orden["nota_base_uso"] = post.get("nota_base_uso")
         orden["tipo_aro_material_id"] = post.get("tipo_aro_material_id")
@@ -196,7 +199,10 @@ class PortalAccount(http.Controller):
             config1["tipo"] =  "unico"
         config_derecha = request.env["orden_trabajo.configuracion_lente"].sudo().create(config1)
         
-        vals = {'orden': orden_c}
+        vals = {'orden_id': orden_c.id}
+        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        print(vals)
+        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
         return request.render('orden_trabajo.success_orden_trabajo',vals)
     @http.route('/orden_trabajo/validar_campos', type='json', auth='public')
     def get_validar_campo(self, **post):
@@ -209,3 +215,114 @@ class PortalAccount(http.Controller):
         return json.dumps(result)
         
         
+    @http.route('/orden_reeport', type='http', auth='user')
+    def generate_report(self, **post):
+        #getting the values to fill the report
+        if not post.get("order_id"):
+            orden = {}
+            orden['date'] = datetime.strptime(post.get("date").replace('T',' '),'%Y-%m-%d %H:%M:%S')
+            orden["paciente"] =  post.get("paciente")
+            orden["valor_esfera_derecho"] =post.get("valor_esfera_derecho")
+            orden["esfera_ojo_derecho"] = post.get("esfera_ojo_derecho")
+            orden["valor_cilindro_derecho"] = post.get("valor_cilindro_derecho")
+            orden["cilindro_ojo_derecho"] = post.get("cilindro_ojo_derecho")
+            orden["eje_ojo_derecho"] = post.get("eje_ojo_derecho")
+            #orden["valor_adiccion_derecho"] = post.get("valor_adiccion_derecho")
+            #orden["adiccion_ojo_derecho"] = post.get("adiccion_ojo_derecho")
+            orden["prisma_derecho_1"] = post.get("prisma_derecho_1")
+            orden["prisma_derecho_2"] = post.get("prisma_derecho_2")
+            orden["valor_esfera_izquierdo"] = post.get("valor_esfera_izquierdo")
+            orden["esfera_ojo_izqueirdo"] = post.get("esfera_ojo_izqueirdo")
+            orden["valor_cilindro_izquierdo"] = post.get("valor_cilindro_izquierdo")
+            orden["cilindro_ojo_izquierdo"] = post.get("cilindro_ojo_izquierdo")
+            orden["eje_ojo_izquierdo"] = post.get("eje_ojo_izquierdo")
+            orden["valor_adicion_izquierdo"] = post.get("valor_adicion_izquierdo")
+            orden["adicion_ojo_izqueirdo"] = post.get("adicion_ojo_izqueirdo")
+            orden["prisma_izquierda_1"] = post.get("prisma_izquierda_1")
+            orden["prisma_izquierdo_2"] = post.get("prisma_izquierdo_2")
+            orden["tipo_orden_id"] = post.get("tipo_orden_id")   
+            orden["oj_derecho_altura_oblea"] = post.get("oj_derecho_altura_oblea")
+            orden["oj_derecho_dp_lejos"]=post.get("oj_derecho_dp_lejos")
+            orden["oj_derecho_dp_cerca"] = post.get("oj_derecho_dp_cerca")
+            orden["oj_izquierdo_altura_oblea"] = post.get("oj_izquierdo_altura_oblea")
+            orden["oj_izquierdo_altura_pupilar"]= post.get("oj_izquierdo_altura_pupilar")
+            orden["oj_izquierdo_dp_lejos"] = post.get("oj_izquierdo_dp_lejos")
+            orden["oj_izquierdo_dp_cerca"] = post.get("oj_izquierdo_dp_cerca")
+            orden["marca"] = post.get("marca")
+            orden["codigo_disenio"] = post.get("codigo_disenio")
+            orden["estado_aro"] = post.get("estado_aro")
+            orden["color_aro_id"] =post.get("color_aro_id")
+            orden["medida_h"] = post.get("medida_h")
+            orden["medida_v"] = post.get("medida_v")
+            orden["medida_d"] = post.get("medida_d")
+            orden["medida_p"] = post.get("medida_p")
+            orden["tipo_aro"] = post.get("tipo_aro")
+            orden["x_client_code"] = ''
+            orden["observaciones"] = post.get("observaciones")
+            orden["nota_base_uso"] = post.get("nota_base_uso")
+            orden["tipo_aro_material_id"] = post.get("tipo_aro_material_id")
+            orden["prisma_derecho_valor2"] = post.get("prisma_derecho_valor2")
+            orden["prisma_derecho_valor1"] = post.get("prisma_derecho_valor1")
+            orden["prisma_izquierdo_valor2"] = post.get("prisma_izquierdo_valor2")
+            orden["prisma_izquierda_valor1"] = post.get("prisma_izquierda_valor1")
+            orden['angulo_panoramico'] = post.get('angulo_panoramico')
+            orden['angulo_pantoscopico'] = post.get('angulo_pantoscopico')
+            orden['distancia_vertice'] = post.get('distancia_vertice')
+            orden['color_antireflejante_id'] = post.get('color_antireflejante_id')
+            user = request.env["res.users"].sudo().browse(request.session.uid)
+            esconfiguracion_complex = False
+            esconfiguracion_complex = post.get("flexSwitchCheckChecked")
+            orden["optica_id"] = ''
+            orden["create_uid"] = user.partner_id.name if user.partner_id else ''
+            orden["x_studio_nombre_comercial"] = user.partner_id.x_studio_nombre_comercial
+            orden["create_date"] = datetime.now()
+            orden['_name'] = 'orden_trabajo.orden'
+            orden["configuracion_avanzada"] = esconfiguracion_complex
+            
+            if user.caja_id:
+                orden["optica_id"] = user.caja_id.name
+            configuraciones = []
+            config1 = {}
+
+            config1["material_lente_id"] = post.get("material_lente_id")
+            config1["tratamientos_id"] = post.get("tratamientos_id")
+            config1['tipo_lente_id'] = post.get("tipo_lente_id")
+            config1["color_lente_id"] = post.get("color_lente_id")
+            config1["producto_template_id"] = post.get("producto_template_id")
+            config1["disenio_lente_id"] = post.get("disenio_lente_id")
+            if esconfiguracion_complex:
+                config1["tipo"] =  "derecha"
+                config2 = {}
+                config2["tipo"] =  "izquierda"
+                config2["material_lente_id"] = post.get("material_lente_id_2")
+                config2["tratamientos_id"] = post.get("tratamientos_id_2")
+                config2['tipo_lente_id'] = post.get("tipo_lente_id_2")
+                config2["color_lente_id"] = post.get("color_lente_id_2")
+                config2["producto_template_id"] = post.get("producto_template_id_2")
+                config2["disenio_lente_id"] = post.get("disenio_lente_id_2")
+                configuraciones.append(config2)
+            else:
+                config1["tipo"] =  "unico"
+            configuraciones.append(config1)
+            orden["lente_configuracion_ids"] = configuraciones
+            #report = request.env.ref('orden_trabajo.reporte_orden_trabajo').report_action([],data={'data':orden})
+            report = request.env.ref('orden_trabajo.reporte_orden_trabajo')._render_qweb_pdf(report_ref='orden_trabajo.reporte_orden_trabajo', data={'datas':[orden]})
+        else:
+            print("@@@@@@@@@@@@@@@@@@@@")
+            print(post.get("order_id"))
+            #order_id = request.env["orden_trabajo.validacion"].sudo().browse(post.get("order_id"))
+            #print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            #print(order_id.id)
+            report = request.env.ref('orden_trabajo.reporte_orden_trabajo')._render_qweb_pdf(res_ids=[int(post.get("order_id"))], report_ref='orden_trabajo.reporte_orden_trabajo')
+                
+        # Generate the report
+        #pdf = report.sudo().get_pdf(data=orden)
+        
+        # Return the PDF as a response
+        return request.make_response(
+            report,
+            headers=[
+                ('Content-Type', 'application/pdf'),
+                ('Content-Disposition', 'attachment; filename=report_name.pdf')
+            ]
+        )

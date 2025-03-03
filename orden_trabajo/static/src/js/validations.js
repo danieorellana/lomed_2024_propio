@@ -344,9 +344,9 @@
         validar_min_max(this,'#feedback_'+$(this).attr('name'),$(this).attr('min'),$(this).attr('max'));
      });
      
-     $('#angulo_pantoscopico').on("change", function () {
+     /*$('#angulo_pantoscopico').on("change", function () {
         validar_min_max(this,'#feedback_'+$(this).attr('name'),$(this).attr('min'),$(this).attr('max'));
-     });  
+     });  */
      
      $('#oj_derecho_dp_lejos').on("change", function () {
         let valido = true;
@@ -575,10 +575,66 @@
         event.preventDefault();
      });
 
-     $('#imprimir_reporte').on("click", function(event){
-        event.preventDefault();
+     $('#imprioreporte').on("click", function(event){
+        let is_checked = $('#imprioreporte').prop('checked');
+        console.log("mostrando");
+        if (is_checked == true){
+            $("#imprimir_reporte").show();
+            $("#btn-enviar").show();
+            
+        }else{
+            $("#imprimir_reporte").hide();
+            $("#btn-enviar").hide();
+        }
+        //event.preventDefault();
      });
 
+
+
+    $('#imprimir_reporte').click(function() {
+        $("#loading-icon1").show();
+        $.ajax({
+            url: '/orden_reeport',
+            type: 'POST',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            data:$("#ordentrabajoform").serialize(),
+            success: function(data) {
+                $("#loading-icon1").hide();
+                $('#imprioreporte').prop("readonly", true);
+                var blob = new Blob([data], {type: 'application/pdf'});
+                var url = window.URL.createObjectURL(blob);
+                window.open(url);
+                
+        }
+        });
+        
+    });
+
+
+    $('#imprimir_reporte2').click(function() {
+        $("#loading-icon1").show();
+        $.ajax({
+            url: '/orden_reeport',
+            type: 'POST',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            data:$(":input").serialize(),
+            success: function(data) {
+                $("#loading-icon1").hide();
+                $('#imprioreporte').prop("readonly", true);
+                var blob = new Blob([data], {type: 'application/pdf'});
+                var url = window.URL.createObjectURL(blob);
+                window.open(url);
+                
+        }
+        });
+        
+    });
+    
+     
     function applySelect2() {
         self.$('select.advanced-select').select2();
         };
