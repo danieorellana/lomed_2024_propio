@@ -1,0 +1,63 @@
+select.o_input {
+    height: auto !important;
+    min-height: 34px;
+    padding: 6px 12px;
+}
+
+/* Para selects con texto muy largo */
+select.o_input option {
+    white-space: normal !important;
+    padding: 5px 10px;
+}
+
+/* Para Many2One (cuando se muestra como select) */
+.o_field_many2one select.o_input {
+    height: auto !important;
+}
+
+/* Contenedor padre debe tener overflow controlado */
+ .o_table_container {
+        width: 100%;
+        overflow-x: auto;
+    }
+    
+    /* Tabla con ancho fijo */
+    .table {
+        width: 100%;
+        max-width: 100%;
+        table-layout: fixed;
+    }
+    
+    /* Celdas de la tabla */
+    .table td, .table th {
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        min-width: 100px; /* Ajusta según necesidad */
+    }
+    
+    /* Selects dentro de la tabla */
+    .table select.form-control {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* Dropdown de opciones */
+    .table select.form-control option {
+        white-space: normal;
+        word-wrap: break-word;
+    }
+    
+    /* Para los inputs dentro de grupos */
+    .input-group {
+        flex-wrap: nowrap;
+        min-width: 0;
+    }
+    
+    /* Ajuste específico para selects pequeños */
+    select[style*="width: 50px;"] {
+        width: 50px !important;
+        min-width: 50px !important;
+    }

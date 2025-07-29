@@ -5,3 +5,4 @@ from . import orden_trabajo_validacion
 from . import orden_trabajo_condicion
 from . import orden_trabajo_parametro
 from . import reporte_orden_trabajo
+from . import error_register

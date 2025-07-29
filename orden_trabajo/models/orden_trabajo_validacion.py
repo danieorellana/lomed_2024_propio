@@ -23,12 +23,15 @@ class orden_trabajo_validacion(models.Model):
                         valido = 'no'
                         mensaje += result['mensaje']
                 except  Exception as e:
+                    
                     print(e)
                     info = ''
                     for i in sys.exc_info():
                         info += str(i)+'\n'
-                    print(info)
-                    print(str(e.args) + '\n' + info + '\n'+sys.argv[0]+'\n'+sys.argv[1] +'\n'+traceback.format_exc())
+                    registro = self.env["orden_trabajo.error_register"].create({
+                        "description": str(e.args) + '\n' + info + '\n'+sys.argv[0]+'\n'+sys.argv[1] +'\n'+traceback.format_exc(),
+                        "condiciones_id" : condicion.id,
+                    })
             result = {'result':valido,'mensaje':mensaje}
                     
         else:

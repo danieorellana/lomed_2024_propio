@@ -90,6 +90,7 @@ class orden(models.Model):
     distancia_vertice = fields.Float("Distancia del vertice")
     color_antireflejante_id = fields.Selection([('na',"NA"),("verde","Verde"),("azul","Azul")], string="Color de antireflejante")
     configuracion_avanzada = fields.Boolean("Configuración por ojo")
+    sale_order_id = fields.Many2one(comodel_name="sale.order", string="Orden de venta")
     @api.model
     def create(self,values):
         record = super(orden, self).create(values)
@@ -101,7 +102,61 @@ class orden(models.Model):
             name += self.optica_id.name +' '
         name += self.date.strftime('%Y-%m-%d %H:%M:%S')
         self.name = name
-        
+    def crear_orden_venta(self):
+        for r in self:
+            if r.sale_order_id:
+                raise ValidationError("Ya tiene una orden de venta vinculada a esta orden de trabajo")
+            #iniciando la creacion de la orden de venta
+            order = {}
+            order["partner_id"] = self.optica_id.id
+            order["paciente"] = self.paciente
+            order["x_orden_status"] = "DIGITADA"
+            order["x_sphere_eye_right"] = self.esfera_ojo_derecho
+            order["x_cilinder_eye_right"] = self.cilindro_ojo_derecho
+            order["x_eje_eye_right"] = self.eje_ojo_derecho
+            order["x_prism_eye_right"] = str(self.prisma_derecho_valor1)+"/"+str(self.prisma_derecho_valor2)
+            #order["x_prism_eye_right_location"] = self.
+            order["x_adition_eye_right"] = self.adiccion_ojo_derecho
+            #ojo izquierdo
+            order["x_sphere_eye_left"] = self.esfera_ojo_izqueirdo
+            order["x_cilinder_eye_left"] = self.cilindro_ojo_izquierdo
+            order['x_eje_eye_left'] = self.eje_ojo_izquierdo
+            order['x_prism_eye_left'] = str(self.prisma_izquierda_valor1)+"/"+str(self.prisma_izquierdo_valor2)
+            order["x_adition_eye_left"] = self.adicion_ojo_izqueirdo
+            #order["x_color_transitions"] = self.colo
+            order["x_aro_propio"] = self.estado_aro
+            order["x_aro"] =  self.codigo_disenio
+            order["x_heigh_wafer_eye"] = str(self.oj_derecho_altura_oblea)+"/"+str(self.oj_izquierdo_altura_oblea)
+            order["x_heigh_pupilar_eye"] = str(self.oj_derecho_altura_pupilar)+"/"+str(self.oj_izquierdo_altura_pupilar)
+            
+            #haciendo las lineas de las ordenes
+            lineas = []
+            for config in self.lente_configuracion_ids:\
+                
+                lineadic = (0,0,{"product_id":config.producto_template_id.product_variant_id[0].id, 
+                            "product_uom_qty": 1,
+                            })
+                #print(lineadic)
+                lineas.append(lineadic)
+            if self.color_antireflejante_id == 'verde':
+                lineadic = (0,0,{"product_id":124698, 
+                            "product_uom_qty": 1,
+                            })
+                #print(lineadic)
+                lineas.append(lineadic)
+            if self.color_antireflejante_id == 'azul':
+                lineadic = (0,0,{"product_id":122853, 
+                            "product_uom_qty": 1,
+                            })
+                #print(lineadic)
+                lineas.append(lineadic)
+            order["order_line"] = lineas
+            sale_order = self.env["sale.order"].create(order)
+            if len(sale_order)>0:
+                self.sale_order_id = sale_order.id
+            
+            
+            
     def crearjson(self):
         docs = []
         orden = {}
@@ -112,8 +167,8 @@ class orden(models.Model):
         orden["valor_cilindro_derecho"] = self.valor_cilindro_derecho
         orden["cilindro_ojo_derecho"] = self.cilindro_ojo_derecho
         orden["eje_ojo_derecho"] = self.eje_ojo_derecho
-        #orden["valor_adiccion_derecho"] = post.get("valor_adiccion_derecho")
-        #orden["adiccion_ojo_derecho"] = post.get("adiccion_ojo_derecho")
+        orden["valor_adiccion_derecho"] = self.valor_adiccion_derecho
+        orden["adiccion_ojo_derecho"] = self.adiccion_ojo_derecho
         orden["prisma_derecho_1"] = self.prisma_derecho_1
         orden["prisma_derecho_2"] = self.prisma_derecho_2
         orden["valor_esfera_izquierdo"] = self.valor_esfera_izquierdo

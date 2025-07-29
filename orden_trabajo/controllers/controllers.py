@@ -219,6 +219,30 @@ class PortalAccount(http.Controller):
     def generate_report(self, **post):
         #getting the values to fill the report
         if not post.get("order_id"):
+            def get_product_name(id):
+                nombre = ''
+                productos = request.env['product.template'].sudo().search([('id','=',id)])
+                if len(productos)> 0:
+                    nombre = productos[0].name
+                return nombre
+            def get_atribute_name(id):
+                nombre = ''
+                productos = request.env['product.template.attribute.value'].sudo().search([('id','=',id)])
+                if len(productos)> 0:
+                    nombre = productos[0].name
+                return nombre
+            def get_color_aro_name(id):
+                nombre = ''
+                productos = request.env['x_product_color'].sudo().search([('id','=',id)])
+                if len(productos)> 0:
+                    nombre = productos[0].x_name
+                return nombre
+            def get_x_material_product_name(id):
+                nombre = ''
+                productos = request.env['x_material_product'].sudo().search([('id','=',id)])
+                if len(productos)> 0:
+                    nombre = productos[0].x_name
+                return nombre
             orden = {}
             orden['date'] = datetime.strptime(post.get("date").replace('T',' '),'%Y-%m-%d %H:%M:%S')
             orden["paciente"] =  post.get("paciente")
@@ -228,7 +252,7 @@ class PortalAccount(http.Controller):
             orden["cilindro_ojo_derecho"] = post.get("cilindro_ojo_derecho")
             orden["eje_ojo_derecho"] = post.get("eje_ojo_derecho")
             #orden["valor_adiccion_derecho"] = post.get("valor_adiccion_derecho")
-            #orden["adiccion_ojo_derecho"] = post.get("adiccion_ojo_derecho")
+            orden["adiccion_ojo_derecho"] = post.get("adiccion_ojo_derecho")
             orden["prisma_derecho_1"] = post.get("prisma_derecho_1")
             orden["prisma_derecho_2"] = post.get("prisma_derecho_2")
             orden["valor_esfera_izquierdo"] = post.get("valor_esfera_izquierdo")
@@ -251,7 +275,7 @@ class PortalAccount(http.Controller):
             orden["marca"] = post.get("marca")
             orden["codigo_disenio"] = post.get("codigo_disenio")
             orden["estado_aro"] = post.get("estado_aro")
-            orden["color_aro_id"] =post.get("color_aro_id")
+            orden["color_aro_id"] =get_color_aro_name(int(post.get("color_aro_id")))
             orden["medida_h"] = post.get("medida_h")
             orden["medida_v"] = post.get("medida_v")
             orden["medida_d"] = post.get("medida_d")
@@ -260,7 +284,7 @@ class PortalAccount(http.Controller):
             orden["x_client_code"] = ''
             orden["observaciones"] = post.get("observaciones")
             orden["nota_base_uso"] = post.get("nota_base_uso")
-            orden["tipo_aro_material_id"] = post.get("tipo_aro_material_id")
+            orden["tipo_aro_material_id"] = get_x_material_product_name(int(post.get("tipo_aro_material_id")))
             orden["prisma_derecho_valor2"] = post.get("prisma_derecho_valor2")
             orden["prisma_derecho_valor1"] = post.get("prisma_derecho_valor1")
             orden["prisma_izquierdo_valor2"] = post.get("prisma_izquierdo_valor2")
@@ -284,22 +308,23 @@ class PortalAccount(http.Controller):
             configuraciones = []
             config1 = {}
 
-            config1["material_lente_id"] = post.get("material_lente_id")
-            config1["tratamientos_id"] = post.get("tratamientos_id")
-            config1['tipo_lente_id'] = post.get("tipo_lente_id")
-            config1["color_lente_id"] = post.get("color_lente_id")
-            config1["producto_template_id"] = post.get("producto_template_id")
-            config1["disenio_lente_id"] = post.get("disenio_lente_id")
+            config1["material_lente_id"] = get_atribute_name(int(post.get("material_lente_id")))
+            config1["tratamientos_id"] = get_atribute_name(int(post.get("tratamientos_id")))
+            config1['tipo_lente_id'] = get_atribute_name(int(post.get("tipo_lente_id")))
+            config1["color_lente_id"] = get_atribute_name(int(post.get("color_lente_id")))
+            config1["producto_template_id"] = get_product_name(int(post.get("producto_template_id")))
+            config1["disenio_lente_id"] = get_atribute_name(int(post.get("disenio_lente_id")))
+            
             if esconfiguracion_complex:
                 config1["tipo"] =  "derecha"
                 config2 = {}
                 config2["tipo"] =  "izquierda"
-                config2["material_lente_id"] = post.get("material_lente_id_2")
-                config2["tratamientos_id"] = post.get("tratamientos_id_2")
-                config2['tipo_lente_id'] = post.get("tipo_lente_id_2")
-                config2["color_lente_id"] = post.get("color_lente_id_2")
-                config2["producto_template_id"] = post.get("producto_template_id_2")
-                config2["disenio_lente_id"] = post.get("disenio_lente_id_2")
+                config2["material_lente_id"] = get_atribute_name(int(post.get("material_lente_id_2")))
+                config2["tratamientos_id"] = get_atribute_name(int(post.get("tratamientos_id_2")))
+                config2['tipo_lente_id'] = get_atribute_name(int(post.get("tipo_lente_id_2")))
+                config2["color_lente_id"] = get_atribute_name(int(post.get("color_lente_id_2")))
+                config2["producto_template_id"] = get_product_name(int(post.get("producto_template_id_2")))
+                config2["disenio_lente_id"] = get_atribute_name(int(post.get("disenio_lente_id_2")))
                 configuraciones.append(config2)
             else:
                 config1["tipo"] =  "unico"

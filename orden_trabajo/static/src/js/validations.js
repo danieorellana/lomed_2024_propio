@@ -507,6 +507,41 @@
         }else{
             $(".single_config").show();
             $(".complex_config").hide();
+            //$("#producto_template_id_2").empty();
+            // Obtener el campo
+            let selectField = document.querySelector("select[name='producto_template_id_2']");
+            // Limpiar y disparar eventos
+            if (selectField) {
+                selectField.value = '';
+                selectField.dispatchEvent(new Event('change'));
+            }
+            let selectField2 = document.querySelector("select[name='material_lente_id_2']");
+            // Limpiar y disparar eventos
+            if (selectField2) {
+                selectField2.value = '';
+                selectField2.dispatchEvent(new Event('change'));
+            }
+            let selectField3 = document.querySelector("select[name='tipo_lente_id_2']");
+            // Limpiar y disparar eventos
+            if (selectField3) {
+                selectField3.value = '';
+                selectField3.dispatchEvent(new Event('change'));
+            }
+            
+            let selectField4 = document.querySelector("select[name='disenio_lente_id_2']");
+            // Limpiar y disparar eventos
+            if (selectField4) {
+                selectField4.value = '';
+                selectField4.dispatchEvent(new Event('change'));
+            }
+            let selectField5 = document.querySelector("select[name='disenio_lente_id_2']");
+            // Limpiar y disparar eventos
+            if (selectField5) {
+                selectField5.value = '';
+                selectField5.dispatchEvent(new Event('change'));
+            }
+            //console.log($("#s2id_producto_template_id_2").val());
+            
         }
      });
 

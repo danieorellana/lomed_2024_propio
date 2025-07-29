@@ -7,6 +7,12 @@
             <field name="res_model">orden_trabajo.validacion</field>
             <field name="view_mode">tree,form</field>
         </record>
+        <record id="registro_validacion" model="ir.actions.act_window">
+            <field name="name">Registro de errores en la vaidacion</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">orden_trabajo.error_register</field>
+            <field name="view_mode">tree,form</field>
+        </record>
         <record id="orden_trabajo_validacion_view_tree" model="ir.ui.view">
             <field name="name">orden_trabajo_validacion_view_tree</field>
             <field name="model">orden_trabajo.validacion</field>
@@ -18,12 +24,24 @@
                 </tree>
             </field>
         </record>
+         <record id="orden_trabajo_errores_view_tree" model="ir.ui.view">
+            <field name="name">orden_trabajo_error_register_view_tree</field>
+            <field name="model">orden_trabajo.error_register</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="create_date" />
+                    <field name="description" />
+                    <field name="condiciones_id" />
+                </tree>
+            </field>
+        </record>
         <record id="orden_trabajo_validacion_view_form" model="ir.ui.view">
             <field name="name">orden_trabajo_validacion_view_form</field>
             <field name="model">orden_trabajo.validacion</field>
             <field name="arch" type="xml">
                 <form>
                     <header>
+                       
                     </header>
                     <sheet>
                         <group>
@@ -42,11 +60,42 @@
                 </form>
             </field>
         </record>
-        <menuitem
+         <record id="orden_trabajo_error_register_view_form" model="ir.ui.view">
+            <field name="name">orden_trabajo_error_register_view_form</field>
+            <field name="model">orden_trabajo.error_register</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="create_date" readonly="1" />
+                            <field name="condiciones_id" readonly="1" />
+                        </group>
+                        <separator string="Descripcion de el error" />
+                        <field name="description" readonly="1" widget="text"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+         <menuitem
             id="validacion_orden_trabajo"
             parent="sale.sale_menu_root"
             name="Validacion orden trabajo"
+            sequence="1"
+        />
+        <menuitem
+            id="reglas_validacion_orden_trabajo"
+            parent="orden_trabajo.validacion_orden_trabajo"
+            name="Reglas de validacion"
             action="orden_trabajo.validacion_action"
+            sequence="1"
+        />
+        <menuitem
+            id="registro_de_validaciones"
+            parent="orden_trabajo.validacion_orden_trabajo"
+            name="Registro"
+            action="orden_trabajo.registro_validacion"
             sequence="1"
         />
     </data>

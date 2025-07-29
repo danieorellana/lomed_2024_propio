@@ -40,6 +40,8 @@
      'assets': {
     'web.assets_frontend': [
         'orden_trabajo/static/src/js/validations.js',
+        'orden_trabajo/static/src/css/custom_size.css',
+
         # other files or globs as needed
     ]
     },
