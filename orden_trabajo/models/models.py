@@ -108,7 +108,7 @@ class orden(models.Model):
                 raise ValidationError("Ya tiene una orden de venta vinculada a esta orden de trabajo")
             #iniciando la creacion de la orden de venta
             order = {}
-            order["partner_id"] = self.optica_id.id
+            order["partner_id"] = self.create_uid.id
             order["paciente"] = self.paciente
             order["x_orden_status"] = "DIGITADA"
             order["x_sphere_eye_right"] = self.esfera_ojo_derecho
