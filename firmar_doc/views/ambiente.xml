@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="firmador_ambiente" model="ir.ui.view">
+            <field name="name">firmador_ambiente</field>
+            <field name="model">sv_fe.ambiente</field>
+            <field name="inherit_id" ref="sv_fe.fe_ambeinte_form" />
+            <field name="arch" type="xml">
+                <group position="inside">                    
+                        <field name="certificado" widget="binary" filename="certificado_name"/>
+                        <field name="certificado_name" invisible="1"/>
+                </group>
+               
+            </field>
+        </record>
+    </data>
+</odoo>
