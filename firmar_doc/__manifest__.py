@@ -25,7 +25,7 @@
     # always loaded
     'data': ['views/ambiente.xml'],
     'demo': [],
-    'external_dependencies': {
-        'python': ['python-jose'],
-    },
+    #'external_dependencies': {
+    #    'python': ['python-jose'],
+    #},
 }
