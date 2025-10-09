@@ -9,9 +9,9 @@ class account_move_inherit_sv_fe(models.Model):
             res = super(account_move_inherit_sv_fe, r).get_emisor()
             if res:
                 if r.caja_id:
-                    r['codEstableMH']= r.caja_id.cod_estable_mh
-                    r['codEstable']=r.caja_id.cod_stable
-                    r['codPuntoVentaMH']=r.caja_id.cod_punto_venta_mh
-                    r['codPuntoVenta']=r.caja_id.cod_punto_venta
+                    res['codEstableMH']= r.caja_id.cod_estable_mh
+                    res['codEstable']=r.caja_id.cod_stable
+                    res['codPuntoVentaMH']=r.caja_id.cod_punto_venta_mh
+                    res['codPuntoVenta']=r.caja_id.cod_punto_venta
         return res
     
