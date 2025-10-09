@@ -6,7 +6,7 @@ class account_move_inherit_sv_fe(models.Model):
     
     def get_emisor(self):
         for r in self:
-            res = super(r, account_move_inherit_sv_fe).get_emisor()
+            res = super(account_move_inherit_sv_fe, r).get_emisor()
             if res:
                 if r.caja_id:
                     r['codEstableMH']= r.caja_id.cod_estable_mh
