@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Esta es la plantilla de correo que enviara cuando se termine el proceso de reinicio de secuencias-->
+        <record id="resequencia_email_template" model="mail.template">
+            <field name="name">Plantilla de resecuenciacion</field>
+            <field name="model_id" ref="model_resequence_config"/>
+            <field name="subject">Resecuenciacion</field>
+            <field name="email_from"></field>
+            <field name="email_to">{{object.email_to_notify}}</field>
+            <field name="body_html" type="html">
+                <table border="0" width="550" align="center" cellspacing="0" cellpadding="0" style="border: 1px solid #000000; font-family: Arial, Helvetica, sans-serif; border-radius: 5px;">
+                    <tbody>
+                        <tr style="height: 40px; margin: 0px; padding: 0px; font-size: 18px; background: #34495E;">
+                            <td style="padding-left: 11px; font-weight: bold; line-height: 40px; color: white; height: 100%;">
+                                <div style="margin: 0px; margin-top: 10px; margin-bottom: 10px; padding: 0px; text-align: center;">
+                                Resecuenciacion de documentos fiscales electronicos
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 30px  22px 30px 11px; line-height: 17px;">
+                                <p style="box-sizing:border-box; margin: 0px; margin-top: 20px; padding: 0px; font-size: 14px;">
+                                    Por medio de el presente correo se le informa que se han reiniciado las secuencias de los documentos fiscales electronicos
+                                    <br/>
+                                    que se encuentran en el siguiente listado:
+                                    <br/>
+                                    <br/>
+                                    <t t-out="object.last_updated_secuence"></t>
+                                </p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding: 30px  22px 30px 11px; line-height: 17px;">
+                                <p style="box-sizing:border-box;margin: 0px; padding: 0px; margin-top: 20px;font-size: 14px; text-align: justify;">
+                                    Le invitamos a que verifique el proceso de resecuenciacion si es necesario.
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </field>
+        </record>
+    </data>
+</odoo>

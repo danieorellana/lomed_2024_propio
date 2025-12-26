@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_resequence_config_form" model="ir.ui.view">
+            <field name="name">resequence.config.form</field>
+            <field name="model">resequence.config</field>
+            <field name="arch" type="xml">
+                <form string="Configuración de Resecuenciación">
+                    <header>
+                        <button name="create_planned_action" string="Crear Acción Programada" type="object" class="btn-primary"/>
+                        <!-- <button name="resecuence_all" string="Ejecutar Resecuenciación" type="object" class="btn-warning" confirm="¿Está seguro de ejecutar la resecuenciación?"/>-->
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nombre de configuración..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Configuración Principal">
+                                <field name="planned_action" widget="many2one"/>
+                                <field name="email_to_notify" placeholder="ejemplo@empresa.com"/>
+                            </group>
+                            <group string="Información">
+                                <field name="last_updated_secuence" widget="html" readonly="1"/>
+                                <field name="create_uid" readonly="1"/>
+                                <field name="create_date" readonly="1"/>
+                                <field name="write_uid" readonly="1"/>
+                                <field name="write_date" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Registro de Cambios">
+                                <field name="update_log" readonly="1" nolabel="1"/>
+                            </page>
+                            <page string="Acción Programada" attrs="{'invisible': [('planned_action', '=', False)]}">
+                                <field name="planned_action" mode="form" nolabel="1">
+                                    <form>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="active"/>
+                                            <field name="interval_number"/>
+                                            <field name="interval_type"/>
+                                            <field name="nextcall"/>
+                                            <field name="priority"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            <page string="Documentación">
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Instrucciones:</strong>
+                                    <ul>
+                                        <li>1. Configure el email para notificaciones</li>
+                                        <li>2. Cree la acción programada (opcional)</li>
+                                        <li>3. Ejecute la resecuenciación cuando sea necesario</li>
+                                        <li>4. Revise el registro de cambios</li>
+                                    </ul>
+                                </div>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_resequence_config_settings" model="ir.actions.act_window">
+            <field name="name">Configuración de Resecuenciación</field>
+            <field name="res_model">resequence.config</field>
+            <field name="view_mode">form</field>
+            <field name="target">main</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_id" ref="sv_restart_secuence.resequence_config_template"/>
+            <field name="context">
+            {'form_view_ref': 'sv_restart_secuence.view_resequence_config_form'}
+            </field>
+
+
+        </record>
+        <menuitem id="menu_resequence_config_root" name="Resecuenciación" parent="base.menu_administration" sequence="100" groups="base.group_system"/>
+        <menuitem id="menu_resequence_config_settings" name="Configurar Resecuenciación" parent="menu_resequence_config_root" action="action_resequence_config_settings" sequence="5" groups="base.group_system"/>
+    </data>
+</odoo>
